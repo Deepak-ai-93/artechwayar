@@ -1,73 +1,66 @@
--- Create the 'posts' table
-CREATE TABLE posts (
+-- Create the posts table
+CREATE TABLE IF NOT EXISTS posts (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  user_id UUID REFERENCES auth.users(id),
   title TEXT NOT NULL,
-  content TEXT NOT NULL,
   slug TEXT NOT NULL UNIQUE,
-  author TEXT NOT NULL,
-  image_url TEXT,
-  tags TEXT[]
+  content TEXT,
+  "imageUrl" TEXT,
+  author TEXT,
+  tags TEXT[],
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create a policy to enable read access for everyone
-CREATE POLICY "Enable read access for all users"
-ON storage.objects
-FOR SELECT
-USING ( bucket_id = 'images' );
-
--- Create the 'images' storage bucket
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('images', 'images', TRUE)
-ON CONFLICT (id) DO NOTHING;
-
--- Create a policy to allow authenticated users to upload images
-CREATE POLICY "Allow authenticated users to upload images"
-ON storage.objects
-FOR INSERT
-TO authenticated
-WITH CHECK ( bucket_id = 'images' );
-
--- Create a policy to allow authenticated users to update their own images
-CREATE POLICY "Allow authenticated users to update own images"
-ON storage.objects
-FOR UPDATE
-TO authenticated
-USING ( auth.uid() = owner );
-
--- Create a policy to allow authenticated users to delete their own images
-CREATE POLICY "Allow authenticated users to delete own images"
-ON storage.objects
-FOR DELETE
-TO authenticated
-USING ( auth.uid() = owner );
-
--- Enable Row-Level Security (RLS) for the 'posts' table
+-- Enable Row Level Security for the posts table
 ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 
--- Allow public read access to all posts
-CREATE POLICY "Allow public read access"
-ON posts
-FOR SELECT
-USING (true);
+-- Create a policy that allows users to read all posts
+CREATE POLICY "Allow read access to all users" ON posts
+  FOR SELECT
+  USING (true);
 
--- Allow authenticated users to insert posts
-CREATE POLICY "Allow authenticated users to insert"
-ON posts
-FOR INSERT
-TO authenticated
-WITH CHECK (true);
+-- Create a policy that allows users to insert their own posts
+CREATE POLICY "Allow authenticated users to insert their own posts" ON posts
+  FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
 
--- Allow authenticated users to update posts
-CREATE POLICY "Allow authenticated users to update"
-ON posts
-FOR UPDATE
-TO authenticated
-USING (true);
+-- Create a policy that allows users to update their own posts
+CREATE POLICY "Allow authenticated users to update their own posts" ON posts
+  FOR UPDATE
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
 
--- Allow authenticated users to delete posts
-CREATE POLICY "Allow authenticated users to delete"
-ON posts
-FOR DELETE
-TO authenticated
-USING (true);
+-- Create a policy that allows users to delete their own posts
+CREATE POLICY "Allow authenticated users to delete their own posts" ON posts
+  FOR DELETE
+  USING (auth.uid() = user_id);
+
+-- Create a storage bucket for images with public read access
+INSERT INTO storage.buckets (id, name, public)
+  VALUES ('images', 'images', TRUE)
+  ON CONFLICT (id)
+  DO NOTHING;
+
+-- Create a policy that allows users to upload images
+CREATE POLICY "Allow authenticated users to upload images" ON storage.objects
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (bucket_id = 'images');
+
+-- Create a policy that allows users to read images
+CREATE POLICY "Allow all users to view images" ON storage.objects
+  FOR SELECT
+  USING (bucket_id = 'images');
+
+-- Create a policy that allows users to update their own images
+CREATE POLICY "Allow authenticated users to update their own images" ON storage.objects
+  FOR UPDATE
+  TO authenticated
+  USING (auth.uid() = owner)
+  WITH CHECK (bucket_id = 'images');
+
+-- Create a policy that allows users to delete their own images
+CREATE POLICY "Allow authenticated users to delete their own images" ON storage.objects
+  FOR DELETE
+  TO authenticated
+  USING (auth.uid() = owner);

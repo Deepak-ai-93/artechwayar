@@ -82,6 +82,7 @@ export async function createPost(prevState: any, formData: FormData) {
       imageUrl: parsed.imageUrl,
       tags: tagsArray,
       author: session.user.email || 'Admin',
+      user_id: session.user.id,
     });
   } catch (e) {
     if (e instanceof z.ZodError) {

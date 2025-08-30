@@ -11,6 +11,7 @@ export type Post = {
   author: string;
   tags?: string[];
   createdAt: string;
+  user_id: string;
 };
 
 const fromSupabase = (post: any): Post => ({
@@ -22,6 +23,7 @@ const fromSupabase = (post: any): Post => ({
   author: post.author,
   tags: post.tags,
   createdAt: post.created_at,
+  user_id: post.user_id,
 });
 
 const slugify = (text: string) =>
@@ -99,7 +101,7 @@ export const addPost = async (supabase: SupabaseClient, postData: Omit<Post, 'id
   return fromSupabase(data);
 };
 
-export const updatePost = async (supabase: SupabaseClient, id: string, postData: Partial<Omit<Post, 'id' | 'createdAt'>>): Promise<Post | undefined> => {
+export const updatePost = async (supabase: SupabaseClient, id: string, postData: Partial<Omit<Post, 'id' | 'createdAt' | 'user_id'>>): Promise<Post | undefined> => {
   const updatedFields: { [key: string]: any } = { ...postData };
   if (postData.title) {
     updatedFields.slug = slugify(postData.title);
