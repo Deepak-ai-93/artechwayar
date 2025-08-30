@@ -186,18 +186,19 @@ export async function uploadImage(formData: FormData) {
   if (!session) {
     return { error: 'Unauthorized' };
   }
-  
-  const supabase = createSupabaseServerClient();
 
-  const file = formData.get('file') as File;
-  if (!file) {
-    return { error: 'No file provided.' };
+  const supabase = createSupabaseServerClient();
+  const file = formData.get('file');
+
+  if (!(file instanceof File)) {
+    return { error: 'No file provided or invalid file format.' };
   }
-  
+
   try {
     const imageUrl = await uploadFile(supabase, file);
     return { imageUrl };
   } catch (error: any) {
-    return { error: error.message };
+    console.error('Upload action error:', error);
+    return { error: error.message || 'An unknown upload error occurred.' };
   }
 }
