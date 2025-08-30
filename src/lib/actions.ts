@@ -21,9 +21,12 @@ export async function login(prevState: any, formData: FormData) {
       password: formData.get('password'),
     });
 
+    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'password';
+
     if (
-      parsed.username === process.env.ADMIN_USERNAME || 'admin' &&
-      parsed.password === process.env.ADMIN_PASSWORD || 'password'
+      parsed.username === adminUsername &&
+      parsed.password === adminPassword
     ) {
       await setSession({ user: { username: parsed.username }, isLoggedIn: true });
     } else {
