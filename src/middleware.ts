@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
+// The middleware is responsible for refreshing the user's session cookie.
+// It does this by creating a new Supabase client on each request and calling
+// `supabase.auth.getSession()` to refresh the session cookie if it's expired.
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -17,6 +20,7 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
+          // If the cookie is set, update the request and response cookies.
           request.cookies.set({ name, value, ...options });
           response = NextResponse.next({
             request: {
@@ -26,6 +30,7 @@ export async function middleware(request: NextRequest) {
           response.cookies.set({ name, value, ...options });
         },
         remove(name: string, options: CookieOptions) {
+          // If the cookie is removed, update the request and response cookies.
           request.cookies.set({ name, value: '', ...options });
           response = NextResponse.next({
             request: {
@@ -41,7 +46,7 @@ export async function middleware(request: NextRequest) {
   // This will refresh the session if it's expired
   const { data: { session } } = await supabase.auth.getSession();
 
-  const isLoginPage = request.nextUrl.pathname.startsWith('/login');
+  const isLoginPage = request.nextUrl.pathname === '/login';
   const isAdminPage = request.nextUrl.pathname.startsWith('/admin');
 
   // If user is not logged in and tries to access an admin page, redirect to login
