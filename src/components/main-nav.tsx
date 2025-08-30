@@ -14,7 +14,7 @@ export function MainNav() {
       <Link href="/" className="mr-6 flex items-center space-x-2">
         <HeroAnimation className="h-6 w-6" />
         <span className="hidden font-bold sm:inline-block font-headline text-xl">
-          Inkling AI
+          Artechway
         </span>
       </Link>
       <nav className="flex items-center gap-6 text-sm">

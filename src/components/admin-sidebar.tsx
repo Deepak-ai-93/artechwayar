@@ -25,7 +25,7 @@ export function AdminSidebar() {
         <Link href="/admin" className="block">
           <div className="flex items-center gap-2">
             <HeroAnimation className="h-6 w-6 text-primary" />
-            <span className="font-headline text-xl font-semibold">Inkling AI</span>
+            <span className="font-headline text-xl font-semibold">Artechway</span>
           </div>
         </Link>
       </SidebarHeader>

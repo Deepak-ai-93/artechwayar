@@ -3,7 +3,7 @@ import { getPosts, Post } from '@/lib/posts';
 import { routes } from '@/lib/routes';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Bot, Code, Paintbrush } from 'lucide-react';
 import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
@@ -77,6 +77,61 @@ const CategorySection = ({
   </section>
 );
 
+const WhySection = () => (
+    <section className="mb-24 text-center md:mb-32">
+      <h2 className="mb-6 font-headline text-4xl font-bold tracking-tight md:text-5xl">
+        Why <span className="text-primary">Artechway</span>?
+      </h2>
+      <p className="mx-auto mb-12 max-w-3xl text-lg text-muted-foreground md:text-xl">
+        We are a collective of designers, developers, and AI enthusiasts passionate about exploring the intersection of technology and creativity.
+      </p>
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-12 md:grid-cols-3">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
+            <Bot className="h-10 w-10" />
+          </div>
+          <h3 className="mb-2 font-headline text-2xl font-bold">AI Innovation</h3>
+          <p className="text-muted-foreground">
+            Exploring the latest advancements and ethical considerations in artificial intelligence.
+          </p>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
+            <Paintbrush className="h-10 w-10" />
+          </div>
+          <h3 className="mb-2 font-headline text-2xl font-bold">Creative Design</h3>
+          <p className="text-muted-foreground">
+            Highlighting cutting-edge design trends and their fusion with new technologies.
+          </p>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
+            <Code className="h-10 w-10" />
+          </div>
+          <h3 className="mb-2 font-headline text-2xl font-bold">Tech Frontiers</h3>
+          <p className="text-muted-foreground">
+            Diving deep into the code and tools that are shaping the future of the web.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+
+  const CallToAction = () => (
+    <section className="rounded-lg bg-primary/5 p-8 text-center">
+        <h2 className="mb-4 font-headline text-3xl font-bold md:text-4xl">
+            Join our Journey
+        </h2>
+        <p className="mx-auto mb-6 max-w-2xl text-muted-foreground">
+            Stay up to date with the latest articles, tutorials, and news from the world of AI and design.
+        </p>
+        <Button size="lg">
+            <Link href="#">Subscribe Now</Link>
+        </Button>
+    </section>
+);
+
+
 export default async function Home() {
   const allPosts = await getPosts();
 
@@ -86,7 +141,7 @@ export default async function Home() {
         <div className="grid grid-cols-1 items-center gap-12 text-center lg:grid-cols-2 lg:text-left">
           <div className="space-y-6">
             <h1 className="font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
-              Welcome to <span className="text-primary">Inkling AI</span>
+              Welcome to <span className="text-primary">Artechway</span>
             </h1>
             <p className="text-xl text-muted-foreground md:text-2xl">
               Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
@@ -105,13 +160,13 @@ export default async function Home() {
   }
 
   const featuredPost = allPosts.find(p => p.category === 'AI Design') || allPosts[0];
-
+  
   return (
     <div className="container mx-auto px-4 py-16 sm:py-24">
       <div className="mb-24 grid grid-cols-1 items-center gap-12 text-center md:mb-32 lg:grid-cols-2 lg:text-left">
         <div className="space-y-6">
           <h1 className="font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
-            Welcome to <span className="text-primary">Inkling AI</span>
+            Welcome to <span className="text-primary">Artechway</span>
           </h1>
           <p className="text-xl text-muted-foreground md:text-2xl">
             Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
@@ -141,6 +196,9 @@ export default async function Home() {
           />
         );
       })}
+
+      <WhySection />
+      <CallToAction />
     </div>
   );
 }

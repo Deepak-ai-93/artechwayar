@@ -15,7 +15,7 @@ export default async function AdminDashboardPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Welcome to Inkling AI</CardTitle>
+          <CardTitle>Welcome to Artechway</CardTitle>
           <CardDescription>
             This is your control center for managing the blog.
           </CardDescription>

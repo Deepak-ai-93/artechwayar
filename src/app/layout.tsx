@@ -18,7 +18,7 @@ const alegreya = Alegreya({
 });
 
 export const metadata: Metadata = {
-  title: 'Inkling AI',
+  title: 'Artechway',
   description: 'A modern blog powered by AI',
 };
 

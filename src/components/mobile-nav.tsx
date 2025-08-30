@@ -34,7 +34,7 @@ export function MobileNav() {
             onClick={() => setOpen(false)}
           >
             <HeroAnimation className="mr-2 h-5 w-5" />
-            <span className="font-bold font-headline text-lg">Inkling AI</span>
+            <span className="font-bold font-headline text-lg">Artechway</span>
           </Link>
           <div className="my-4 flex h-[calc(100vh-8rem)] flex-col justify-between pb-10 pl-6">
             <div className="flex flex-col space-y-3">
@@ -57,7 +57,7 @@ export function MobileNav() {
       </Sheet>
       <Link href="/" className="flex items-center space-x-2">
         <HeroAnimation className="h-6 w-6" />
-        <span className="font-bold font-headline text-xl">Inkling AI</span>
+        <span className="font-bold font-headline text-xl">Artechway</span>
       </Link>
     </div>
   );
