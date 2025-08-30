@@ -3,7 +3,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 // The middleware is responsible for refreshing the user's session cookie.
 // It does this by creating a new Supabase client on each request and calling
-// `supabase.auth.getSession()` to refresh the session cookie if it's expired.
+// `supabase.auth.getUser()` to validate the session.
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -44,18 +44,18 @@ export async function middleware(request: NextRequest) {
   );
 
   // This will refresh the session if it's expired
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
   const isLoginPage = request.nextUrl.pathname === '/login';
   const isAdminPage = request.nextUrl.pathname.startsWith('/admin');
 
   // If user is not logged in and tries to access an admin page, redirect to login
-  if (!session && isAdminPage) {
+  if (!user && isAdminPage) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
   
   // If user is logged in and tries to access the login page, redirect to admin dashboard
-  if (session && isLoginPage) {
+  if (user && isLoginPage) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 

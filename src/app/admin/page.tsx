@@ -2,14 +2,14 @@ import { getSession } from '@/lib/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default async function AdminDashboardPage() {
-  const session = await getSession();
+  const { user } = await getSession();
 
   return (
     <div className="space-y-8">
       <div className="space-y-2">
         <h1 className="font-headline text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome back, {session?.user?.email || 'Admin'}!
+          Welcome back, {user?.email || 'Admin'}!
         </p>
       </div>
 

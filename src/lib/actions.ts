@@ -60,8 +60,8 @@ const postSchema = z.object({
 });
 
 export async function createPost(prevState: any, formData: FormData) {
-  const session = await getSession();
-  if (!session) {
+  const { user } = await getSession();
+  if (!user) {
     return { message: 'Unauthorized' };
   }
 
@@ -96,8 +96,8 @@ export async function createPost(prevState: any, formData: FormData) {
       imageUrl: parsed.imageUrl,
       tags: tagsArray,
       category: parsed.category,
-      author: session.user.email || 'Admin',
-      user_id: session.user.id,
+      author: user.email || 'Admin',
+      user_id: user.id,
     });
   } catch (error: any) {
     console.error('Database error:', error);
@@ -109,8 +109,8 @@ export async function createPost(prevState: any, formData: FormData) {
 }
 
 export async function editPost(id: string, prevState: any, formData: FormData) {
-  const session = await getSession();
-  if (!session) {
+  const { user } = await getSession();
+  if (!user) {
     return { message: 'Unauthorized' };
   }
   
@@ -148,8 +148,8 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
 }
 
 export async function removePost(id: string) {
-  const session = await getSession();
-  if (!session) {
+  const { user } = await getSession();
+  if (!user) {
     throw new Error('Unauthorized');
   }
   const supabase = createSupabaseServerClient();
@@ -163,8 +163,8 @@ export async function removePost(id: string) {
 }
 
 export async function generateBlogTitle(keywords: string) {
-  const session = await getSession();
-  if (!session) {
+  const { user } = await getSession();
+  if (!user) {
     return { error: 'Unauthorized' };
   }
   if (!keywords) {
@@ -180,8 +180,8 @@ export async function generateBlogTitle(keywords: string) {
 }
 
 export async function generateBlogContent(title: string) {
-  const session = await getSession();
-  if (!session) {
+  const { user } = await getSession();
+  if (!user) {
     return { error: 'Unauthorized' };
   }
   if (!title) {
@@ -197,8 +197,8 @@ export async function generateBlogContent(title: string) {
 }
 
 export async function uploadImage(formData: FormData) {
-  const session = await getSession();
-  if (!session) {
+  const { user } = await getSession();
+  if (!user) {
     return { error: 'Unauthorized' };
   }
 

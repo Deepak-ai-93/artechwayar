@@ -41,11 +41,11 @@ export async function getSession() {
   const supabase = createSupabaseServerClient(true);
   try {
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    return session;
+      data: { user },
+    } = await supabase.auth.getUser();
+    return { user };
   } catch (error) {
     console.error('Error getting session:', error);
-    return null;
+    return { user: null };
   }
 }
