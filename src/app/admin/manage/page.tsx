@@ -28,6 +28,7 @@ export default async function ManagePostsPage() {
             <TableRow>
               <TableHead className="w-[40%]">Title</TableHead>
               <TableHead>Author</TableHead>
+              <TableHead>Tags</TableHead>
               <TableHead>Date</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -40,6 +41,11 @@ export default async function ManagePostsPage() {
                   <TableCell>
                     <Badge variant="outline">{post.author}</Badge>
                   </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {post.tags?.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                    </div>
+                  </TableCell>
                   <TableCell>{format(parseISO(post.createdAt), 'MMM d, yyyy')}</TableCell>
                   <TableCell className="text-right">
                     <PostActions postId={post.id} />
@@ -48,7 +54,7 @@ export default async function ManagePostsPage() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center">
+                <TableCell colSpan={5} className="h-24 text-center">
                   No posts found.
                 </TableCell>
               </TableRow>

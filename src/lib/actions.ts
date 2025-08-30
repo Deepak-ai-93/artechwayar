@@ -5,9 +5,10 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-import { addPost, deletePost, updatePost } from '@/lib/posts';
+import { addPost, deletePost, updatePost, uploadFile } from '@/lib/posts';
 import { getSession, createSupabaseServerClient } from '@/lib/auth';
 import { generateBlogTitle as generateTitleFlow } from '@/ai/flows/generate-blog-title';
+import { generateBlogContent as generateContentFlow } from '@/ai/flows/generate-blog-content';
 
 const loginSchema = z.object({
   username: z.string().email('Please enter a valid email address'),
@@ -54,6 +55,7 @@ const postSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
   content: z.string().min(10, 'Content must be at least 10 characters'),
   imageUrl: z.string().url('Please enter a valid image URL'),
+  tags: z.string().optional(),
 });
 
 export async function createPost(prevState: any, formData: FormData) {
@@ -67,16 +69,23 @@ export async function createPost(prevState: any, formData: FormData) {
       title: formData.get('title'),
       content: formData.get('content'),
       imageUrl: formData.get('imageUrl'),
+      tags: formData.get('tags'),
     });
 
+    const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
+
     await addPost({
-      ...parsed,
+      title: parsed.title,
+      content: parsed.content,
+      imageUrl: parsed.imageUrl,
+      tags: tagsArray,
       author: session.user.email || 'Admin',
     });
   } catch (e) {
     if (e instanceof z.ZodError) {
       return { message: 'Invalid form data. Please check your inputs.' };
     }
+    console.error(e);
     return { message: 'An error occurred while creating the post.' };
   }
 
@@ -96,13 +105,22 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
       title: formData.get('title'),
       content: formData.get('content'),
       imageUrl: formData.get('imageUrl'),
+      tags: formData.get('tags'),
     });
+    
+    const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
 
-    await updatePost(id, parsed);
+    await updatePost(id, {
+      title: parsed.title,
+      content: parsed.content,
+      imageUrl: parsed.imageUrl,
+      tags: tagsArray,
+    });
   } catch (e) {
     if (e instanceof z.ZodError) {
       return { message: 'Invalid form data. Please check your inputs.' };
     }
+    console.error(e);
     return { message: 'An error occurred while updating the post.' };
   }
 
@@ -141,5 +159,41 @@ export async function generateBlogTitle(keywords: string) {
   } catch (error) {
     console.error(error);
     return { error: 'Failed to generate title.' };
+  }
+}
+
+export async function generateBlogContent(title: string) {
+  const session = await getSession();
+  if (!session) {
+    return { error: 'Unauthorized' };
+  }
+  if (!title) {
+    return { error: 'A title is required to generate content.' };
+  }
+  try {
+    const { content } = await generateContentFlow({ title });
+    return { content };
+  } catch (error) {
+    console.error(error);
+    return { error: 'Failed to generate content.' };
+  }
+}
+
+export async function uploadImage(formData: FormData) {
+  const session = await getSession();
+  if (!session) {
+    return { error: 'Unauthorized' };
+  }
+
+  const file = formData.get('file') as File;
+  if (!file) {
+    return { error: 'No file provided.' };
+  }
+  
+  try {
+    const imageUrl = await uploadFile(file);
+    return { imageUrl };
+  } catch (error: any) {
+    return { error: error.message };
   }
 }

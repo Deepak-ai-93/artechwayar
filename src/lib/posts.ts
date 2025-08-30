@@ -8,6 +8,7 @@ export type Post = {
   content: string;
   imageUrl: string;
   author: string;
+  tags?: string[];
   createdAt: string;
 };
 
@@ -18,6 +19,7 @@ const fromSupabase = (post: any): Post => ({
   content: post.content,
   imageUrl: post.imageUrl,
   author: post.author,
+  tags: post.tags,
   createdAt: post.created_at,
 });
 
@@ -131,4 +133,17 @@ export const deletePost = async (id: string): Promise<boolean> => {
     return false;
   }
   return true;
+};
+
+export const uploadFile = async (file: File) => {
+  const supabase = createSupabaseServerClient();
+  const fileName = `${Date.now()}-${file.name}`;
+  const { data, error } = await supabase.storage.from('images').upload(fileName, file);
+
+  if (error) {
+    throw new Error(`Storage error: ${error.message}`);
+  }
+
+  const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(data.path);
+  return publicUrl;
 };

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useActionState } from 'react';
+import { useState, useActionState, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { createPost, editPost, generateBlogTitle } from '@/lib/actions';
+import { createPost, editPost, generateBlogTitle, generateBlogContent, uploadImage } from '@/lib/actions';
 import type { Post } from '@/lib/posts';
 
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Sparkles, Save } from 'lucide-react';
+import { Loader2, Sparkles, Save, Upload } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 function SubmitButton({ isEdit }: { isEdit: boolean }) {
   const { pending } = useFormStatus();
@@ -27,16 +28,26 @@ function SubmitButton({ isEdit }: { isEdit: boolean }) {
   );
 }
 
-export default function PostForm({ post }: { post?: Post }) {
+export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
   const router = useRouter();
+  const { toast } = useToast();
   const isEdit = !!post;
   const formAction = isEdit ? editPost.bind(null, post.id) : createPost;
   const [state, action] = useActionState(formAction, { message: '' });
 
   const [keywords, setKeywords] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingTitle, setIsGeneratingTitle] = useState(false);
+  const [isGeneratingContent, setIsGeneratingContent] = useState(false);
+
   const [generatedTitle, setGeneratedTitle] = useState(post?.title || '');
+  const [generatedContent, setGeneratedContent] = useState(post?.content || '');
+  
   const [titleError, setTitleError] = useState('');
+
+  const [imageUrl, setImageUrl] = useState(post?.imageUrl || 'https://picsum.photos/1200/800');
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
 
   const handleGenerateTitle = async () => {
     if (!keywords) {
@@ -44,14 +55,67 @@ export default function PostForm({ post }: { post?: Post }) {
         return;
     }
     setTitleError('');
-    setIsGenerating(true);
+    setIsGeneratingTitle(true);
     const result = await generateBlogTitle(keywords);
     if (result.title) {
         setGeneratedTitle(result.title);
     } else {
         setTitleError(result.error || 'An unknown error occurred.');
     }
-    setIsGenerating(false);
+    setIsGeneratingTitle(false);
+  };
+
+  const handleGenerateContent = async () => {
+    if (!generatedTitle) {
+      toast({
+        variant: 'destructive',
+        title: 'Title is missing',
+        description: 'Please generate or enter a title first to generate content.',
+      });
+      return;
+    }
+    setIsGeneratingContent(true);
+    const result = await generateBlogContent(generatedTitle);
+    if (result.content) {
+      setGeneratedContent(result.content);
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Content Generation Failed',
+        description: result.error || 'An unknown error occurred while generating content.',
+      });
+    }
+    setIsGeneratingContent(false);
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      const result = await uploadImage(formData);
+      if (result.imageUrl) {
+        setImageUrl(result.imageUrl);
+        toast({
+          title: 'Image Uploaded',
+          description: 'Your image has been successfully uploaded.',
+        });
+      } else {
+        throw new Error(result.error || 'Unknown error');
+      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Upload Failed',
+        description: error.message || 'Failed to upload image. Please try again.',
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
 
@@ -73,15 +137,15 @@ export default function PostForm({ post }: { post?: Post }) {
                 placeholder="e.g., 'React hooks', 'web performance'"
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
-                disabled={isGenerating}
+                disabled={isGeneratingTitle}
               />
-              <Button type="button" onClick={handleGenerateTitle} disabled={isGenerating} className="w-full sm:w-auto">
-                {isGenerating ? (
+              <Button type="button" onClick={handleGenerateTitle} disabled={isGeneratingTitle} className="w-full sm:w-auto">
+                {isGeneratingTitle ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                     <Sparkles className="mr-2 h-4 w-4" />
                 )}
-                <span>{isGenerating ? 'Generating...' : 'Generate Title'}</span>
+                <span>{isGeneratingTitle ? 'Generating...' : 'Generate Title'}</span>
               </Button>
             </div>
             {titleError && <p className="text-sm font-medium text-destructive">{titleError}</p>}
@@ -100,29 +164,64 @@ export default function PostForm({ post }: { post?: Post }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="content">Content</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="content">Content</Label>
+              <Button type="button" variant="secondary" size="sm" onClick={handleGenerateContent} disabled={isGeneratingContent}>
+                {isGeneratingContent ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Sparkles className="mr-2 h-4 w-4" />
+                )}
+                <span>{isGeneratingContent ? 'Generating...' : 'Generate with AI'}</span>
+              </Button>
+            </div>
             <Textarea
               id="content"
               name="content"
               placeholder="Write your blog post here..."
               required
-              defaultValue={post?.content}
+              value={generatedContent}
+              onChange={(e) => setGeneratedContent(e.target.value)}
               rows={15}
             />
           </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="tags">Tags</Label>
+            <Input
+              id="tags"
+              name="tags"
+              placeholder="e.g., react, tailwind, nextjs"
+              defaultValue={post?.tags}
+            />
+            <p className="text-sm text-muted-foreground">
+              Separate tags with commas.
+            </p>
+          </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageUrl">Image URL</Label>
-            <Input
-              id="imageUrl"
-              name="imageUrl"
-              type="url"
-              placeholder="https://picsum.photos/1200/800"
-              required
-              defaultValue={post?.imageUrl || 'https://picsum.photos/1200/800'}
-            />
-             <p className="text-sm text-muted-foreground">
-                Use a service like <a href="https://picsum.photos/" target="_blank" rel="noopener noreferrer" className="underline">picsum.photos</a> for placeholder images.
+            <Label>Image</Label>
+            <div className="flex items-center gap-4">
+               <Input id="imageUrl" name="imageUrl" type="hidden" value={imageUrl} />
+               <img src={imageUrl} alt="Post image" className="h-20 w-20 rounded-md object-cover" />
+                <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+                  {isUploading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Upload className="mr-2 h-4 w-4" />
+                  )}
+                  <span>{isUploading ? 'Uploading...' : 'Upload Image'}</span>
+                </Button>
+                <Input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  accept="image/*"
+                />
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Upload an image for your post. The current image URL will be used if no new image is uploaded.
             </p>
           </div>
           

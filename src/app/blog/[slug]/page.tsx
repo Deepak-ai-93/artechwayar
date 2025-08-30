@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import type { Metadata } from 'next';
+import { Badge } from '@/components/ui/badge';
 
 type Props = {
   params: { slug: string };
@@ -20,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.content.substring(0, 150),
+    keywords: post.tags,
   };
 }
 
@@ -33,6 +35,11 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <article className="container mx-auto max-w-4xl px-4 py-8">
       <header className="mb-8 text-center">
+        <div className="flex justify-center gap-2 mb-4">
+          {post.tags?.map((tag) => (
+            <Badge key={tag} variant="secondary">{tag}</Badge>
+          ))}
+        </div>
         <h1 className="mb-4 font-headline text-4xl font-bold tracking-tight md:text-5xl">
           {post.title}
         </h1>
