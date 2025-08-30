@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useState, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { createPost, editPost, generateBlogTitle } from '@/lib/actions';
 import type { Post } from '@/lib/posts';
@@ -31,7 +31,7 @@ export default function PostForm({ post }: { post?: Post }) {
   const router = useRouter();
   const isEdit = !!post;
   const formAction = isEdit ? editPost.bind(null, post.id) : createPost;
-  const [state, action] = useFormState(formAction, { message: '' });
+  const [state, action] = useActionState(formAction, { message: '' });
 
   const [keywords, setKeywords] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
