@@ -10,6 +10,7 @@ export type Post = {
   imageUrl: string;
   author: string;
   tags?: string[];
+  category: string;
   createdAt: string;
   user_id: string;
 };
@@ -22,6 +23,7 @@ const fromSupabase = (post: any): Post => ({
   imageUrl: post.imageUrl,
   author: post.author,
   tags: post.tags,
+  category: post.category,
   createdAt: post.created_at,
   user_id: post.user_id,
 });

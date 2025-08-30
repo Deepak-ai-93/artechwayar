@@ -56,6 +56,7 @@ const postSchema = z.object({
   content: z.string().min(10, 'Content must be at least 10 characters'),
   imageUrl: z.string().url('Please enter a valid image URL'),
   tags: z.string().optional(),
+  category: z.string().min(1, 'Please select a category'),
 });
 
 export async function createPost(prevState: any, formData: FormData) {
@@ -72,6 +73,7 @@ export async function createPost(prevState: any, formData: FormData) {
       content: formData.get('content'),
       imageUrl: formData.get('imageUrl'),
       tags: formData.get('tags'),
+      category: formData.get('category'),
     });
 
     const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
@@ -81,6 +83,7 @@ export async function createPost(prevState: any, formData: FormData) {
       content: parsed.content,
       imageUrl: parsed.imageUrl,
       tags: tagsArray,
+      category: parsed.category,
       author: session.user.email || 'Admin',
       user_id: session.user.id,
     });
@@ -110,6 +113,7 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
       content: formData.get('content'),
       imageUrl: formData.get('imageUrl'),
       tags: formData.get('tags'),
+      category: formData.get('category'),
     });
     
     const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
@@ -119,6 +123,7 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
       content: parsed.content,
       imageUrl: parsed.imageUrl,
       tags: tagsArray,
+      category: parsed.category,
     });
   } catch (e) {
     if (e instanceof z.ZodError) {

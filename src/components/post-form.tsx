@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2, Sparkles, Save, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { routes } from '../main-nav';
 
 function SubmitButton({ isEdit }: { isEdit: boolean }) {
   const { pending } = useFormStatus();
@@ -129,7 +131,7 @@ export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
       </CardHeader>
       <CardContent>
         <form action={action} className="space-y-6">
-          {post?.slug && <input type="hidden" name="slug" value={post.slug} />}
+          <input type="hidden" name="slug" value={post?.slug || ''} />
           <div className="space-y-2">
             <Label htmlFor="keywords">AI Title Generation</Label>
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -163,6 +165,22 @@ export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
               onChange={(e) => setGeneratedTitle(e.target.value)}
             />
           </div>
+          
+          <div className="space-y-2">
+              <Label htmlFor="category">Category</Label>
+              <Select name="category" defaultValue={post?.category}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {routes.map(route => (
+                    <SelectItem key={route.href} value={route.label}>
+                      {route.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
