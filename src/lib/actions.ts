@@ -17,6 +17,9 @@ const loginSchema = z.object({
 
 export async function login(prevState: any, formData: FormData) {
   const supabase = createSupabaseServerClient();
+  if (!supabase) {
+    return { message: 'Supabase credentials are not configured.' };
+  }
   try {
     const parsed = loginSchema.parse({
       username: formData.get('username'),
@@ -47,6 +50,10 @@ export async function login(prevState: any, formData: FormData) {
 
 export async function logout() {
   const supabase = createSupabaseServerClient();
+  if (!supabase) {
+    console.error('Supabase client not available, cannot log out.');
+    return;
+  }
   await supabase.auth.signOut();
   redirect('/login');
 }
@@ -63,6 +70,11 @@ export async function createPost(prevState: any, formData: FormData) {
   const { user } = await getSession();
   if (!user) {
     return { message: 'Unauthorized: You must be logged in to create a post.' };
+  }
+
+  const supabase = createSupabaseServerClient();
+  if (!supabase) {
+    return { message: 'Cannot create post: Supabase is not configured.' };
   }
 
   let parsed;
@@ -86,7 +98,6 @@ export async function createPost(prevState: any, formData: FormData) {
   }
 
   try {
-    const supabase = createSupabaseServerClient();
     const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
 
     await addPost(supabase, {
@@ -116,6 +127,9 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
   }
   
   const supabase = createSupabaseServerClient();
+  if (!supabase) {
+    return { message: 'Cannot edit post: Supabase is not configured.' };
+  }
 
   try {
     const parsed = postSchema.parse({
@@ -154,6 +168,9 @@ export async function removePost(id: string) {
     throw new Error('Unauthorized');
   }
   const supabase = createSupabaseServerClient();
+  if (!supabase) {
+    throw new Error('Supabase is not configured.');
+  }
   const success = await deletePost(supabase, id);
   if (success) {
     revalidatePath('/');
@@ -204,6 +221,10 @@ export async function uploadImage(formData: FormData) {
   }
 
   const supabase = createSupabaseServerClient();
+  if (!supabase) {
+    return { error: 'Supabase is not configured.' };
+  }
+  
   const file = formData.get('file');
 
   if (!(file instanceof File)) {
