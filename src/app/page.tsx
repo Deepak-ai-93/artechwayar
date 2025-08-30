@@ -165,11 +165,11 @@ export default async function Home() {
     <div className="container mx-auto px-4 py-16 sm:py-24">
       <div className="mb-24 text-center md:mb-32">
         <div className="relative mx-auto max-w-4xl">
-          <h1 className="font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
-            Welcome to <span className="relative inline-block"><HeroAnimation className="absolute -inset-4 md:-inset-6 lg:-inset-8 text-[8px] opacity-30" />Artechway</span>
+          <h1 className="font-headline text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+            Welcome to <span className="relative inline-block"><HeroAnimation className="absolute -inset-2 sm:-inset-4 md:-inset-6 lg:-inset-8 text-[6px] sm:text-[8px] opacity-30" />Artechway</span>
           </h1>
         </div>
-        <p className="mx-auto mt-8 max-w-3xl text-xl text-muted-foreground md:text-2xl">
+        <p className="mx-auto mt-8 max-w-3xl text-lg md:text-xl text-muted-foreground">
           Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
         </p>
       </div>
