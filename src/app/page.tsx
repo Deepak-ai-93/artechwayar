@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { HeroAnimation } from '@/components/hero-animation';
 
 // Helper component for the Featured Post
 const FeaturedPost = ({ post }: { post: Post }) => (
@@ -151,13 +152,18 @@ export default async function Home() {
   if (allPosts.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 sm:py-24">
-         <div className="text-center">
-          <h1 className="mb-4 text-center font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
-            Welcome to <span className="text-primary">Artechway</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto md:text-2xl">
-            Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
-          </p>
+        <div className="grid grid-cols-1 items-center gap-12 text-center lg:grid-cols-2 lg:text-left">
+          <div>
+            <h1 className="mb-4 font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
+              Welcome to <span className="text-primary">Artechway</span>
+            </h1>
+            <p className="text-xl text-muted-foreground md:text-2xl">
+              Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
+            </p>
+          </div>
+          <div className="hidden lg:block">
+            <HeroAnimation />
+          </div>
         </div>
         <div className="mt-16 text-center text-muted-foreground">
           <p className="text-lg">No posts yet. The ink is still drying!</p>
@@ -167,19 +173,25 @@ export default async function Home() {
     );
   }
 
-  const featuredPost = allPosts[0];
+  const featuredPost = allPosts.find(p => p.category === 'AI Design') || allPosts[0];
+  const otherPosts = allPosts.filter(p => p.id !== featuredPost.id);
+
 
   return (
     <div className="container mx-auto px-4 py-16 sm:py-24">
-      <div className="mb-24 text-center md:mb-32">
-        <h1 className="mb-4 font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
-          Welcome to <span className="text-primary">Artechway</span>
-        </h1>
-        <p className="mx-auto max-w-3xl text-xl text-muted-foreground md:text-2xl">
-          Exploring the frontiers of AI, design, and technology. Fresh ideas and
-          perspectives, delivered weekly.
-        </p>
-      </div>
+       <div className="mb-24 grid grid-cols-1 items-center gap-12 text-center md:mb-32 lg:grid-cols-2 lg:text-left">
+          <div>
+            <h1 className="mb-4 font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
+              Welcome to <span className="text-primary">Artechway</span>
+            </h1>
+            <p className="text-xl text-muted-foreground md:text-2xl">
+              Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
+            </p>
+          </div>
+          <div className="hidden lg:block">
+            <HeroAnimation />
+          </div>
+        </div>
 
       <FeaturedPost post={featuredPost} />
       
