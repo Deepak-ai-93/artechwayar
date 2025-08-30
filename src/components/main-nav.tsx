@@ -1,10 +1,11 @@
+
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { routes } from '@/lib/routes';
-import { HeroAnimation } from './hero-animation';
+import { PenSquare } from 'lucide-react';
 
 export function MainNav() {
   const pathname = usePathname();
@@ -12,7 +13,7 @@ export function MainNav() {
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-        <HeroAnimation variant="logo" className="h-6 w-6 text-primary" />
+        <PenSquare className="h-6 w-6 text-primary" />
         <span className="hidden font-bold sm:inline-block font-headline text-xl">
           Artechway
         </span>

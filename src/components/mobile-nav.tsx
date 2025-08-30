@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -5,10 +6,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
+import { Menu, PenSquare } from 'lucide-react';
 import { routes } from '@/lib/routes';
 import { cn } from '@/lib/utils';
-import { HeroAnimation } from './hero-animation';
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
@@ -33,7 +33,7 @@ export function MobileNav() {
             className="flex items-center"
             onClick={() => setOpen(false)}
           >
-            <HeroAnimation variant="logo" className="mr-2 h-5 w-5 text-primary" />
+            <PenSquare className="mr-2 h-5 w-5 text-primary" />
             <span className="font-bold font-headline text-lg">Artechway</span>
           </Link>
           <div className="my-4 flex h-[calc(100vh-8rem)] flex-col justify-between pb-10 pl-6">
@@ -56,7 +56,7 @@ export function MobileNav() {
         </SheetContent>
       </Sheet>
       <Link href="/" className="flex items-center space-x-2">
-        <HeroAnimation variant="logo" className="h-6 w-6 text-primary" />
+        <PenSquare className="h-6 w-6 text-primary" />
         <span className="font-bold font-headline text-xl">Artechway</span>
       </Link>
     </div>

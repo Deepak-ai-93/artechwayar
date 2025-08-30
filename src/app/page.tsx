@@ -4,12 +4,11 @@ import { getPosts, Post } from '@/lib/posts';
 import { routes } from '@/lib/routes';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Bot, Code, Paintbrush } from 'lucide-react';
+import { ArrowRight, Bot, Code, Paintbrush, PenSquare } from 'lucide-react';
 import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { HeroAnimation } from '@/components/hero-animation';
 
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
@@ -149,7 +148,7 @@ export default async function Home() {
             </p>
           </div>
           <div className="hidden lg:flex justify-center">
-            <HeroAnimation />
+            <PenSquare className="h-48 w-48 text-primary/10" />
           </div>
         </div>
         <div className="mt-16 text-center text-muted-foreground">
@@ -167,7 +166,7 @@ export default async function Home() {
       <div className="mb-24 text-center md:mb-32">
         <div className="relative mx-auto max-w-4xl">
           <h1 className="font-headline text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-            Welcome to <span className="relative inline-block"><HeroAnimation className="absolute -inset-2 sm:-inset-4 md:-inset-6 lg:-inset-8 text-[6px] sm:text-[8px] opacity-30" />Artechway</span>
+            Welcome to <span className="text-primary">Artechway</span>
           </h1>
         </div>
         <p className="mx-auto mt-8 max-w-3xl text-lg md:text-xl text-muted-foreground">
@@ -200,5 +199,3 @@ export default async function Home() {
     </div>
   );
 }
-
-    
