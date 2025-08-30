@@ -28,7 +28,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
           <div className="mb-4 text-sm font-semibold tracking-widest uppercase text-primary">
             Featured Post
           </div>
-          <h2 className="mb-4 font-headline text-4xl leading-tight group-hover:text-primary md:text-5xl">
+          <h2 className="mb-4 font-headline text-3xl md:text-5xl leading-tight group-hover:text-primary">
             {post.title}
           </h2>
           <div className="mb-6 flex items-center gap-4 text-base text-muted-foreground">
@@ -38,8 +38,8 @@ const FeaturedPost = ({ post }: { post: Post }) => (
               {format(parseISO(post.createdAt), 'MMMM d, yyyy')}
             </time>
           </div>
-          <p className="mb-8 text-lg leading-relaxed text-foreground/80">
-            {post.content.substring(0, 150)}...
+          <p className="mb-8 text-lg leading-relaxed text-foreground/80 line-clamp-3">
+            {post.content}
           </p>
           <div className="flex items-center text-lg font-semibold text-primary">
             Read more
@@ -60,7 +60,7 @@ const CategorySection = ({
 }) => (
   <section key={category.href} className="mb-24 md:mb-32">
     <div className="mb-10 flex items-center justify-between">
-      <h2 className="font-headline text-4xl font-bold tracking-tight md:text-5xl">
+      <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tight">
         Latest in <span className="text-primary">{category.label}</span>
       </h2>
       <Button asChild variant="link" className="text-lg text-primary hidden md:inline-flex">
@@ -179,8 +179,7 @@ export default async function Home() {
 
       {routes.map((route) => {
         const postsForCategory = allPosts
-          .filter((post) => post.category === route.label)
-          .slice(0, 3);
+          .filter((post) => post.category === route.label);
         
         if (postsForCategory.length === 0) {
           return null;
@@ -190,7 +189,7 @@ export default async function Home() {
           <CategorySection
             key={route.href}
             category={route}
-            posts={postsForCategory}
+            posts={postsForCategory.slice(0,3)}
           />
         );
       })}
