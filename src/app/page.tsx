@@ -1,3 +1,4 @@
+
 import PostCard from '@/components/post-card';
 import { getPosts, Post } from '@/lib/posts';
 import { routes } from '@/lib/routes';
@@ -199,3 +200,5 @@ export default async function Home() {
     </div>
   );
 }
+
+    

@@ -38,6 +38,10 @@ const slugify = (text: string) =>
     .replace(/--+/g, '-'); // Replace multiple - with single -
 
 export const getPosts = async (): Promise<Post[]> => {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.warn("Supabase credentials are not set. Skipping post fetching.");
+    return [];
+  }
   const supabase = createSupabaseServerClient(true);
   const { data: posts, error } = await supabase
     .from('posts')
@@ -52,6 +56,9 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]> => {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return [];
+  }
   const supabase = createSupabaseServerClient(true);
   const { data: posts, error } = await supabase
     .from('posts')
@@ -67,6 +74,9 @@ export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]>
 };
 
 export const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return undefined;
+  }
   const supabase = createSupabaseServerClient(true);
   const { data, error } = await supabase
     .from('posts')
@@ -83,6 +93,9 @@ export const getPostBySlug = async (slug: string): Promise<Post | undefined> => 
 };
 
 export const getPostById = async (id: string): Promise<Post | undefined> => {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return undefined;
+  }
   const supabase = createSupabaseServerClient(true);
   const { data, error } = await supabase
     .from('posts')
