@@ -73,7 +73,7 @@ export function AdminSidebar() {
         <form action={logout}>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Logout">
+              <SidebarMenuButton tooltip="Logout" type="submit">
                 <LogOut />
                 <span>Logout</span>
               </SidebarMenuButton>
