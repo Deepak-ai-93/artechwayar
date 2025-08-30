@@ -34,17 +34,17 @@ export default function LoginPage() {
             <CardHeader className="text-center">
               <CardTitle className="font-headline text-3xl">Admin Portal</CardTitle>
               <CardDescription>
-                Sign in to manage your blog. <br/> (Hint: admin / password)
+                Sign in to manage your blog. <br/> Use your Supabase credentials.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">Email</Label>
                 <Input
                   id="username"
                   name="username"
-                  type="text"
-                  placeholder="admin"
+                  type="email"
+                  placeholder="admin@example.com"
                   required
                 />
               </div>

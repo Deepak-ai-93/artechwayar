@@ -1,49 +1,49 @@
 import 'server-only';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { SignJWT, jwtVerify } from 'jose';
 
-const secretKey = process.env.SESSION_SECRET || 'fallback-secret-for-development';
-const key = new TextEncoder().encode(secretKey);
-
-export async function encrypt(payload: any) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('1h')
-    .sign(key);
-}
-
-export async function decrypt(input: string): Promise<any> {
-  try {
-    const { payload } = await jwtVerify(input, key, {
-      algorithms: ['HS256'],
-    });
-    return payload;
-  } catch (error) {
-    // This can happen if the token is expired or invalid
-    return null;
-  }
-}
-
-export async function setSession(sessionData: { user: { username: string }; isLoggedIn: boolean }) {
-  const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-  const session = await encrypt({ ...sessionData, expires });
-
-  cookies().set('session', session, { expires, httpOnly: true });
+export function createSupabaseServerClient() {
+  const cookieStore = cookies();
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // The `set` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+        remove(name: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value: '', ...options });
+          } catch (error) {
+            // The `delete` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+      },
+    }
+  );
 }
 
 export async function getSession() {
-  const cookie = cookies().get('session')?.value;
-  if (!cookie) {
-    return { isLoggedIn: false };
+  const supabase = createSupabaseServerClient();
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session;
+  } catch (error) {
+    console.error('Error getting session:', error);
+    return null;
   }
-  const session = await decrypt(cookie);
-  if (!session) {
-    return { isLoggedIn: false };
-  }
-  return session;
-}
-
-export async function deleteSession() {
-  cookies().delete('session');
 }

@@ -6,43 +6,47 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { addPost, deletePost, updatePost } from '@/lib/posts';
-import { getSession, setSession, deleteSession } from '@/lib/auth';
+import { getSession, createSupabaseServerClient } from '@/lib/auth';
 import { generateBlogTitle as generateTitleFlow } from '@/ai/flows/generate-blog-title';
 
 const loginSchema = z.object({
-  username: z.string().min(1, 'Username is required'),
-  password: z.string().min(1, 'Password is required'),
+  username: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 export async function login(prevState: any, formData: FormData) {
+  const supabase = createSupabaseServerClient();
   try {
     const parsed = loginSchema.parse({
       username: formData.get('username'),
       password: formData.get('password'),
     });
 
-    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'password';
+    const { error } = await supabase.auth.signInWithPassword({
+      email: parsed.username,
+      password: parsed.password,
+    });
 
-    if (
-      parsed.username === adminUsername &&
-      parsed.password === adminPassword
-    ) {
-      await setSession({ user: { username: parsed.username }, isLoggedIn: true });
-    } else {
-      return { message: 'Invalid username or password' };
+    if (error) {
+      return { message: error.message };
     }
   } catch (e) {
     if (e instanceof z.ZodError) {
-      return { message: 'Invalid form data' };
+      let errorMessage = '';
+      e.errors.forEach((err) => {
+        errorMessage += err.message + '. ';
+      });
+      return { message: errorMessage.trim() };
     }
     return { message: 'An unknown error occurred' };
   }
+  revalidatePath('/', 'layout');
   redirect('/admin');
 }
 
 export async function logout() {
-  await deleteSession();
+  const supabase = createSupabaseServerClient();
+  await supabase.auth.signOut();
   redirect('/login');
 }
 
@@ -54,7 +58,7 @@ const postSchema = z.object({
 
 export async function createPost(prevState: any, formData: FormData) {
   const session = await getSession();
-  if (!session.isLoggedIn) {
+  if (!session) {
     return { message: 'Unauthorized' };
   }
 
@@ -67,7 +71,7 @@ export async function createPost(prevState: any, formData: FormData) {
 
     await addPost({
       ...parsed,
-      author: session.user.username,
+      author: session.user.email || 'Admin',
     });
   } catch (e) {
     if (e instanceof z.ZodError) {
@@ -83,7 +87,7 @@ export async function createPost(prevState: any, formData: FormData) {
 
 export async function editPost(id: string, prevState: any, formData: FormData) {
   const session = await getSession();
-  if (!session.isLoggedIn) {
+  if (!session) {
     return { message: 'Unauthorized' };
   }
 
@@ -111,7 +115,7 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
 
 export async function removePost(id: string) {
   const session = await getSession();
-  if (!session.isLoggedIn) {
+  if (!session) {
     throw new Error('Unauthorized');
   }
   const success = await deletePost(id);
@@ -125,7 +129,7 @@ export async function removePost(id: string) {
 
 export async function generateBlogTitle(keywords: string) {
   const session = await getSession();
-  if (!session.isLoggedIn) {
+  if (!session) {
     return { error: 'Unauthorized' };
   }
   if (!keywords) {

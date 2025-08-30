@@ -1,5 +1,5 @@
 import 'server-only';
-import { supabase } from './supabase';
+import { createSupabaseServerClient } from './auth';
 
 export type Post = {
   id: string;
@@ -31,6 +31,7 @@ const slugify = (text: string) =>
     .replace(/--+/g, '-'); // Replace multiple - with single -
 
 export const getPosts = async (): Promise<Post[]> => {
+  const supabase = createSupabaseServerClient();
   const { data: posts, error } = await supabase
     .from('posts')
     .select('*')
@@ -44,6 +45,7 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 export const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
+  const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from('posts')
     .select('*')
@@ -59,6 +61,7 @@ export const getPostBySlug = async (slug: string): Promise<Post | undefined> => 
 };
 
 export const getPostById = async (id: string): Promise<Post | undefined> => {
+  const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from('posts')
     .select('*')
@@ -74,6 +77,7 @@ export const getPostById = async (id: string): Promise<Post | undefined> => {
 };
 
 export const addPost = async (postData: Omit<Post, 'id' | 'slug' | 'createdAt'>): Promise<Post> => {
+  const supabase = createSupabaseServerClient();
   const newPost = {
     ...postData,
     slug: slugify(postData.title),
@@ -94,6 +98,7 @@ export const addPost = async (postData: Omit<Post, 'id' | 'slug' | 'createdAt'>)
 };
 
 export const updatePost = async (id: string, postData: Partial<Omit<Post, 'id' | 'createdAt'>>): Promise<Post | undefined> => {
+  const supabase = createSupabaseServerClient();
   const updatedFields: { [key: string]: any } = { ...postData };
   if (postData.title) {
     updatedFields.slug = slugify(postData.title);
@@ -115,6 +120,7 @@ export const updatePost = async (id: string, postData: Partial<Omit<Post, 'id' |
 };
 
 export const deletePost = async (id: string): Promise<boolean> => {
+  const supabase = createSupabaseServerClient();
   const { error } = await supabase
     .from('posts')
     .delete()

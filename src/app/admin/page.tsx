@@ -9,7 +9,7 @@ export default async function AdminDashboardPage() {
       <div className="space-y-2">
         <h1 className="font-headline text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome back, {session.user?.username || 'Admin'}!
+          Welcome back, {session?.user?.email || 'Admin'}!
         </p>
       </div>
 
