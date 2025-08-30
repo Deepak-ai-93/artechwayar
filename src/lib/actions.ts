@@ -62,12 +62,10 @@ const postSchema = z.object({
 export async function createPost(prevState: any, formData: FormData) {
   const { user } = await getSession();
   if (!user) {
-    return { message: 'Unauthorized' };
+    return { message: 'Unauthorized: You must be logged in to create a post.' };
   }
 
-  const supabase = createSupabaseServerClient();
   let parsed;
-
   try {
     parsed = postSchema.parse({
       title: formData.get('title'),
@@ -82,12 +80,13 @@ export async function createPost(prevState: any, formData: FormData) {
       e.errors.forEach((err) => {
         errorMessage += `${err.path[0]}: ${err.message}. `;
       });
-      return { message: errorMessage.trim() };
+      return { message: `Invalid data: ${errorMessage.trim()}` };
     }
     return { message: 'An unexpected error occurred during validation.' };
   }
 
   try {
+    const supabase = createSupabaseServerClient();
     const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
 
     await addPost(supabase, {
@@ -100,13 +99,14 @@ export async function createPost(prevState: any, formData: FormData) {
       user_id: user.id,
     });
   } catch (error: any) {
-    console.error('Database error:', error);
+    console.error('Database error in createPost:', error);
     return { message: `An error occurred while creating the post: ${error.message}` };
   }
 
   revalidatePath('/', 'layout');
   redirect('/admin/manage');
 }
+
 
 export async function editPost(id: string, prevState: any, formData: FormData) {
   const { user } = await getSession();
