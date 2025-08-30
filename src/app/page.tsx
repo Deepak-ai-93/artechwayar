@@ -162,7 +162,7 @@ export default async function Home() {
   const featuredPost = allPosts.find(p => p.category === 'AI Design') || allPosts[0];
   
   return (
-    <div className="container mx-auto px-4 py-16 sm:py-24">
+    <div className="container mx-auto px-4 py-16 sm:py-24 overflow-x-hidden">
       <div className="mb-24 text-center md:mb-32">
         <div className="relative mx-auto max-w-4xl">
           <h1 className="font-headline text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
