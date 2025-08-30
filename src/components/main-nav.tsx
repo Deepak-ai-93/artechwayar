@@ -12,7 +12,7 @@ export function MainNav() {
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-        <HeroAnimation className="h-6 w-6" />
+        <HeroAnimation variant="logo" className="h-6 w-6 text-primary" />
         <span className="hidden font-bold sm:inline-block font-headline text-xl">
           Artechway
         </span>

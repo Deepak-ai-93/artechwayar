@@ -163,19 +163,17 @@ export default async function Home() {
   
   return (
     <div className="container mx-auto px-4 py-16 sm:py-24">
-      <div className="mb-24 grid grid-cols-1 items-center gap-12 text-center md:mb-32 lg:grid-cols-2 lg:text-left">
-        <div className="space-y-6">
+      <div className="mb-24 text-center md:mb-32">
+        <div className="relative mx-auto max-w-4xl">
           <h1 className="font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
-            Welcome to <span className="text-primary">Artechway</span>
+            Welcome to <span className="relative inline-block"><HeroAnimation className="absolute -inset-4 md:-inset-6 lg:-inset-8 text-[8px] opacity-30" />Artechway</span>
           </h1>
-          <p className="text-xl text-muted-foreground md:text-2xl">
-            Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
-          </p>
         </div>
-        <div className="hidden lg:flex justify-center">
-          <HeroAnimation />
-        </div>
+        <p className="mx-auto mt-8 max-w-3xl text-xl text-muted-foreground md:text-2xl">
+          Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
+        </p>
       </div>
+
 
       {allPosts.length > 0 && <FeaturedPost post={featuredPost} />}
 
