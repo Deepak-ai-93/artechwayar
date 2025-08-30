@@ -100,6 +100,7 @@ export async function createPost(prevState: any, formData: FormData) {
     });
   } catch (error: any) {
     console.error('Database error in createPost:', error);
+    // Return the full, detailed error message from the database.
     return { message: `An error occurred while creating the post: ${error.message}` };
   }
 

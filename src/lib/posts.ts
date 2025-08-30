@@ -112,7 +112,8 @@ export const addPost = async (supabase: SupabaseClient, postData: Omit<Post, 'id
 
   if (error) {
     console.error('Error adding post to database:', error);
-    throw new Error('Failed to create post in database.');
+    // Re-throw the original error to be caught by the server action
+    throw error;
   }
 
   return fromSupabase(data);
