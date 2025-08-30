@@ -87,6 +87,7 @@ export const addPost = async (supabase: SupabaseClient, postData: Omit<Post, 'id
   const newPost = {
     ...postData,
     slug: slugify(postData.title),
+    user_id: postData.user_id,
   };
 
   const { data, error } = await supabase
