@@ -129,6 +129,7 @@ export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
       </CardHeader>
       <CardContent>
         <form action={action} className="space-y-6">
+          {post?.slug && <input type="hidden" name="slug" value={post.slug} />}
           <div className="space-y-2">
             <Label htmlFor="keywords">AI Title Generation</Label>
             <div className="flex flex-col gap-2 sm:flex-row">

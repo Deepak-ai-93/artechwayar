@@ -1,4 +1,5 @@
 import 'server-only';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { createSupabaseServerClient } from './auth';
 
 export type Post = {
@@ -78,8 +79,7 @@ export const getPostById = async (id: string): Promise<Post | undefined> => {
   return fromSupabase(data);
 };
 
-export const addPost = async (postData: Omit<Post, 'id' | 'slug' | 'createdAt'>): Promise<Post> => {
-  const supabase = createSupabaseServerClient();
+export const addPost = async (supabase: SupabaseClient, postData: Omit<Post, 'id' | 'slug' | 'createdAt'>): Promise<Post> => {
   const newPost = {
     ...postData,
     slug: slugify(postData.title),
@@ -99,8 +99,7 @@ export const addPost = async (postData: Omit<Post, 'id' | 'slug' | 'createdAt'>)
   return fromSupabase(data);
 };
 
-export const updatePost = async (id: string, postData: Partial<Omit<Post, 'id' | 'createdAt'>>): Promise<Post | undefined> => {
-  const supabase = createSupabaseServerClient();
+export const updatePost = async (supabase: SupabaseClient, id: string, postData: Partial<Omit<Post, 'id' | 'createdAt'>>): Promise<Post | undefined> => {
   const updatedFields: { [key: string]: any } = { ...postData };
   if (postData.title) {
     updatedFields.slug = slugify(postData.title);
@@ -121,8 +120,7 @@ export const updatePost = async (id: string, postData: Partial<Omit<Post, 'id' |
   return fromSupabase(data);
 };
 
-export const deletePost = async (id: string): Promise<boolean> => {
-  const supabase = createSupabaseServerClient();
+export const deletePost = async (supabase: SupabaseClient, id: string): Promise<boolean> => {
   const { error } = await supabase
     .from('posts')
     .delete()
@@ -135,8 +133,7 @@ export const deletePost = async (id: string): Promise<boolean> => {
   return true;
 };
 
-export const uploadFile = async (file: File) => {
-  const supabase = createSupabaseServerClient();
+export const uploadFile = async (supabase: SupabaseClient, file: File) => {
   const fileName = `${Date.now()}-${file.name}`;
   const { data, error } = await supabase.storage.from('images').upload(fileName, file);
 

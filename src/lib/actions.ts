@@ -63,6 +63,8 @@ export async function createPost(prevState: any, formData: FormData) {
   if (!session) {
     return { message: 'Unauthorized' };
   }
+  
+  const supabase = createSupabaseServerClient();
 
   try {
     const parsed = postSchema.parse({
@@ -74,7 +76,7 @@ export async function createPost(prevState: any, formData: FormData) {
 
     const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
 
-    await addPost({
+    await addPost(supabase, {
       title: parsed.title,
       content: parsed.content,
       imageUrl: parsed.imageUrl,
@@ -89,8 +91,7 @@ export async function createPost(prevState: any, formData: FormData) {
     return { message: 'An error occurred while creating the post.' };
   }
 
-  revalidatePath('/');
-  revalidatePath('/admin/manage');
+  revalidatePath('/', 'layout');
   redirect('/admin/manage');
 }
 
@@ -99,6 +100,8 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
   if (!session) {
     return { message: 'Unauthorized' };
   }
+  
+  const supabase = createSupabaseServerClient();
 
   try {
     const parsed = postSchema.parse({
@@ -110,7 +113,7 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
     
     const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
 
-    await updatePost(id, {
+    await updatePost(supabase, id, {
       title: parsed.title,
       content: parsed.content,
       imageUrl: parsed.imageUrl,
@@ -124,10 +127,8 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
     return { message: 'An error occurred while updating the post.' };
   }
 
-  revalidatePath('/');
-  revalidatePath(`/blog/[slug]`, 'page');
-  revalidatePath('/admin/manage');
-  revalidatePath(`/admin/edit/${id}`);
+  revalidatePath('/', 'layout');
+  revalidatePath(`/blog/${formData.get('slug')}`, 'page');
   redirect('/admin/manage');
 }
 
@@ -136,7 +137,8 @@ export async function removePost(id: string) {
   if (!session) {
     throw new Error('Unauthorized');
   }
-  const success = await deletePost(id);
+  const supabase = createSupabaseServerClient();
+  const success = await deletePost(supabase, id);
   if (success) {
     revalidatePath('/');
     revalidatePath('/admin/manage');
@@ -184,6 +186,8 @@ export async function uploadImage(formData: FormData) {
   if (!session) {
     return { error: 'Unauthorized' };
   }
+  
+  const supabase = createSupabaseServerClient();
 
   const file = formData.get('file') as File;
   if (!file) {
@@ -191,7 +195,7 @@ export async function uploadImage(formData: FormData) {
   }
   
   try {
-    const imageUrl = await uploadFile(file);
+    const imageUrl = await uploadFile(supabase, file);
     return { imageUrl };
   } catch (error: any) {
     return { error: error.message };

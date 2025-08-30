@@ -17,7 +17,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
           Refine and update your post. Every word counts.
         </p>
       </div>
-      <PostForm post={{...post, tags: post.tags?.join(', ')}} />
+      <PostForm post={{...post, slug: post.slug, tags: post.tags?.join(', ')}} />
     </div>
   );
 }
