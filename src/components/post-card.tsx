@@ -4,6 +4,7 @@ import type { Post } from '@/lib/posts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import { Badge } from './ui/badge';
 
 type PostCardProps = {
   post: Post;
@@ -31,9 +32,11 @@ export default function PostCard({ post }: PostCardProps) {
           </div>
         </CardHeader>
         <CardContent className="p-6 pt-0">
-          <p className="mb-4 text-sm text-muted-foreground">
-            By {post.author} on {format(parseISO(post.createdAt), 'MMMM d, yyyy')}
-          </p>
+          <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
+            <Badge variant="secondary">{post.category}</Badge>
+            <span>&middot;</span>
+            <time dateTime={post.createdAt}>{format(parseISO(post.createdAt), 'MMMM d, yyyy')}</time>
+          </div>
           <p className="mb-4 line-clamp-3 text-base leading-relaxed text-foreground/80">
             {post.content}
           </p>
