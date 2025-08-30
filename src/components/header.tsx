@@ -16,12 +16,6 @@ export default function Header() {
         </div>
         <MobileNav />
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/login">
-              <LogIn className="mr-2 h-4 w-4" />
-              Admin Login
-            </Link>
-          </Button>
         </div>
       </div>
     </header>
