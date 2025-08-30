@@ -13,12 +13,11 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <div className="md:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button
             variant="ghost"
-            className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
           >
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>
@@ -49,6 +48,5 @@ export function MobileNav() {
           </div>
         </SheetContent>
       </Sheet>
-    </div>
   );
 }

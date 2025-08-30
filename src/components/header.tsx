@@ -14,8 +14,11 @@ export default function Header() {
           </Link>
           <MainNav />
         </div>
-        <MobileNav />
-        <div className="flex flex-1 items-center justify-end space-x-2">
+        
+        <div className="flex flex-1 items-center justify-between md:justify-end">
+          <MobileNav />
+          <div className="flex items-center space-x-2">
+          </div>
         </div>
       </div>
     </header>
