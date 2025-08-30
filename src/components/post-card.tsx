@@ -12,7 +12,7 @@ type PostCardProps = {
 export default function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`} className="group">
-      <Card className="h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+      <Card className="h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 bg-secondary border-secondary-foreground/10">
         <CardHeader className="p-0">
           <div className="relative h-56 w-full">
             <Image

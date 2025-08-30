@@ -6,9 +6,14 @@ export default async function Home() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-center font-headline text-5xl font-bold tracking-tight md:text-6xl">
-        From the Inkwell
-      </h1>
+      <div className="text-center mb-16">
+        <h1 className="mb-4 text-center font-headline text-5xl font-bold tracking-tight md:text-7xl">
+          From the <span className="text-primary">Inkwell</span>
+        </h1>
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
+        </p>
+      </div>
       {posts.length > 0 ? (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
