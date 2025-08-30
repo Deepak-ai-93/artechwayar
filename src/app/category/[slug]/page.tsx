@@ -39,6 +39,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 }
 
 export async function generateStaticParams() {
+  const { routes } = await import('@/components/main-nav');
   return routes.map(route => ({
     slug: route.href.replace('/category/', ''),
   }));
