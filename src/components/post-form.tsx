@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Loader2, Sparkles, Save, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { routes } from '@/components/main-nav';
+import { routes } from '@/lib/routes';
 
 function SubmitButton({ isEdit }: { isEdit: boolean }) {
   const { pending } = useFormStatus();

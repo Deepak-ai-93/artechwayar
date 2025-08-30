@@ -1,7 +1,7 @@
 import { getPostsByCategory } from '@/lib/posts';
 import PostCard from '@/components/post-card';
 import { notFound } from 'next/navigation';
-import { routes } from '@/components/main-nav';
+import { routes } from '@/lib/routes';
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
   const route = routes.find(r => r.href === `/category/${params.slug}`);
@@ -39,8 +39,6 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 }
 
 export async function generateStaticParams() {
-  // Directly import `routes` here for static generation
-  const { routes } = await import('@/components/main-nav');
   return routes.map(route => ({
     slug: route.href.replace('/category/', ''),
   }));

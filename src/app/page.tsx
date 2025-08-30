@@ -1,6 +1,6 @@
 import PostCard from '@/components/post-card';
 import { getPosts, Post } from '@/lib/posts';
-import { routes } from '@/components/main-nav';
+import { routes } from '@/lib/routes';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, BrainCircuit, Lightbulb, Rocket } from 'lucide-react';

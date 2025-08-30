@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, PenSquare } from 'lucide-react';
-import { routes } from './main-nav';
+import { routes } from '@/lib/routes';
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);

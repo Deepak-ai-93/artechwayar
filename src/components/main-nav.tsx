@@ -3,14 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-
-export const routes = [
-  { href: '/category/ai-design', label: 'AI Design' },
-  { href: '/category/ai-marketing', label: 'AI Marketing' },
-  { href: '/category/ai-news', label: 'AI News' },
-  { href: '/category/future-of-ai', label: 'Future of AI' },
-  { href: '/category/ai-for-business', label: 'AI for Business' },
-];
+import { routes } from '@/lib/routes';
 
 export function MainNav() {
   const pathname = usePathname();
