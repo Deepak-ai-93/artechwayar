@@ -51,6 +51,21 @@ export const getPosts = async (): Promise<Post[]> => {
   return posts.map(fromSupabase);
 };
 
+export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]> => {
+  const supabase = createSupabaseServerClient(true);
+  const { data: posts, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('category', categoryLabel)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(`Error fetching posts for category ${categoryLabel}:`, error);
+    return [];
+  }
+  return posts.map(fromSupabase);
+};
+
 export const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
   const supabase = createSupabaseServerClient(true);
   const { data, error } = await supabase
