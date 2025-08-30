@@ -19,7 +19,7 @@ const GenerateBlogContentInputSchema = z.object({
 export type GenerateBlogContentInput = z.infer<typeof GenerateBlogContentInputSchema>;
 
 const GenerateBlogContentOutputSchema = z.object({
-  content: z.string().describe('The generated blog content, formatted as paragraphs separated by newlines.'),
+  content: z.string().describe('The generated blog content, formatted as Markdown.'),
 });
 export type GenerateBlogContentOutput = z.infer<typeof GenerateBlogContentOutputSchema>;
 
@@ -33,11 +33,10 @@ const generateBlogContentPrompt = ai.definePrompt({
   output: {schema: GenerateBlogContentOutputSchema},
   prompt: `You are an expert content writer specializing in SEO-optimized blog posts.
   
-Generate a compelling and informative blog post based on the following title: {{{title}}}.
+Generate a compelling and informative blog post in Markdown format based on the following title: {{{title}}}.
 
 The content should be well-structured, engaging, and provide real value to the reader.
-Use multiple paragraphs. Separate each paragraph with a single newline character.
-Do not use markdown formatting.`,
+Use headings, subheadings, bold text, and hyperlinks where appropriate to create a rich, readable layout.`,
 });
 
 const generateBlogContentFlow = ai.defineFlow(

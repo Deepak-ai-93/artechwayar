@@ -4,6 +4,10 @@ import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import type { Metadata } from 'next';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import {unified} from 'unified';
+import remarkParse from 'remark-parse';
+import remarkHtml from 'remark-html';
 
 type Props = {
   params: { slug: string };
@@ -25,12 +29,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const markdownToHtml = async (markdown: string) => {
+  const result = await unified().use(remarkParse).use(remarkHtml).process(markdown);
+  return result.toString();
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const post = await getPostBySlug(params.slug);
 
   if (!post) {
     notFound();
   }
+  
+  const contentHtml = await markdownToHtml(post.content);
 
   return (
     <article className="container mx-auto max-w-4xl px-4 py-8">
@@ -59,11 +70,15 @@ export default async function BlogPostPage({ params }: Props) {
         />
       </div>
 
-      <div className="prose prose-lg max-w-none text-foreground/90 prose-headings:font-headline prose-headings:text-foreground">
-        {post.content.split('\n').map((paragraph, index) => (
-          <p key={index} className="mb-4 leading-relaxed">{paragraph}</p>
-        ))}
-      </div>
+      <div 
+        className={cn(
+          'prose prose-lg max-w-none text-foreground/90', 
+          'prose-headings:font-headline prose-headings:text-foreground',
+          'prose-a:text-primary hover:prose-a:text-primary/80',
+          'prose-strong:font-semibold prose-strong:text-foreground'
+        )}
+        dangerouslySetInnerHTML={{ __html: contentHtml }} 
+      />
     </article>
   );
 }

@@ -178,12 +178,15 @@ export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
             <Textarea
               id="content"
               name="content"
-              placeholder="Write your blog post here..."
+              placeholder="Write your blog post here... (Markdown is supported)"
               required
               value={generatedContent}
               onChange={(e) => setGeneratedContent(e.target.value)}
               rows={15}
             />
+            <p className="text-sm text-muted-foreground">
+              Styling with Markdown is supported.
+            </p>
           </div>
           
           <div className="space-y-2">
