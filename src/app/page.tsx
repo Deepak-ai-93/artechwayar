@@ -3,11 +3,12 @@ import { getPosts, Post } from '@/lib/posts';
 import { routes } from '@/lib/routes';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Bot, Code, Paintbrush, PenSquare } from 'lucide-react';
+import { ArrowRight, Bot, Code, Paintbrush } from 'lucide-react';
 import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { LogoIcon } from '@/components/ui/logo-icon';
 
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
@@ -151,7 +152,7 @@ export default async function Home() {
             </p>
           </div>
           <div className="relative hidden lg:flex justify-center items-center h-full">
-            <PenSquare className="h-48 w-48 text-primary/10" />
+            <LogoIcon className="h-48 w-48 text-primary/10" />
             <div className="absolute inset-0 bg-gradient-radial from-primary/10 to-transparent -z-10 animate-pulse"></div>
           </div>
         </div>

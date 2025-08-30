@@ -13,8 +13,9 @@ import {
   SidebarMenuButton,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, PlusCircle, List, LogOut, PenSquare } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, List, LogOut } from 'lucide-react';
 import { logout } from '@/lib/actions';
+import { LogoIcon } from '@/components/ui/logo-icon';
 
 export function AdminSidebar() {
   const pathname = usePathname();
@@ -24,7 +25,7 @@ export function AdminSidebar() {
       <SidebarHeader>
         <Link href="/admin" className="block">
           <div className="flex items-center gap-2">
-            <PenSquare className="h-6 w-6 text-primary" />
+            <LogoIcon className="h-6 w-6 text-primary" />
             <span className="font-headline text-xl font-semibold">Artechway</span>
           </div>
         </Link>
