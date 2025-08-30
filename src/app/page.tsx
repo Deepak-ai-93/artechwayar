@@ -169,17 +169,6 @@ export default async function Home() {
 
   const featuredPost = allPosts[0];
   const otherPosts = allPosts.slice(1);
-  
-  const postsByCategory: { [key: string]: Post[] } = {};
-  routes.forEach(route => {
-    postsByCategory[route.label] = [];
-  });
-  otherPosts.forEach(post => {
-    if (postsByCategory[post.category]) {
-      postsByCategory[post.category].push(post);
-    }
-  });
-
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -197,13 +186,19 @@ export default async function Home() {
       
       <WhyArtechway />
 
-      {routes.map((route) => (
-        <CategorySection
-          key={route.href}
-          category={route}
-          posts={postsByCategory[route.label].slice(0, 3)} // Show max 3 posts per category
-        />
-      ))}
+      {routes.map((route) => {
+        const postsForCategory = otherPosts
+          .filter((post) => post.category === route.label)
+          .slice(0, 3);
+        
+        return (
+          <CategorySection
+            key={route.href}
+            category={route}
+            posts={postsForCategory}
+          />
+        );
+      })}
       
       <CallToAction />
     </div>
