@@ -11,29 +11,29 @@ import { Card, CardContent, CardTitle } from '@/components/ui/card';
 
 // Helper component for the Featured Post
 const FeaturedPost = ({ post }: { post: Post }) => (
-  <section className="mb-24">
+  <section className="mb-24 md:mb-32">
     <Link href={`/blog/${post.slug}`} className="group block">
       <Card className="grid grid-cols-1 overflow-hidden transition-all duration-300 ease-in-out md:grid-cols-2 hover:shadow-xl bg-card/50 backdrop-blur-sm">
-        <CardContent className="flex flex-col justify-center p-8 md:p-12">
+        <CardContent className="flex flex-col justify-center p-8 md:p-16">
           <div className="mb-4 text-sm font-semibold tracking-widest uppercase text-primary">
             Featured Post
           </div>
           <CardTitle className="mb-4 font-headline text-4xl leading-tight group-hover:text-primary md:text-5xl">
             {post.title}
           </CardTitle>
-          <div className="mb-6 flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="mb-6 flex items-center gap-4 text-base text-muted-foreground">
             <Badge variant="secondary">{post.category}</Badge>
             <span>&middot;</span>
             <time dateTime={post.createdAt}>
               {format(parseISO(post.createdAt), 'MMMM d, yyyy')}
             </time>
           </div>
-          <p className="mb-8 text-base leading-relaxed text-foreground/80 md:text-lg">
+          <p className="mb-8 text-lg leading-relaxed text-foreground/80">
             {post.content.substring(0, 150)}...
           </p>
-          <div className="flex items-center font-semibold text-primary">
+          <div className="flex items-center text-lg font-semibold text-primary">
             Read more
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
           </div>
         </CardContent>
         <div className="relative min-h-[300px] w-full md:min-h-0">
@@ -52,46 +52,46 @@ const FeaturedPost = ({ post }: { post: Post }) => (
 );
 
 const WhyArtechway = () => (
-  <section className="mb-24 rounded-lg bg-muted/50 p-8 text-center">
-    <h2 className="mb-4 font-headline text-3xl font-bold tracking-tight md:text-4xl">
+  <section className="mb-24 rounded-lg bg-muted/50 p-12 text-center md:mb-32">
+    <h2 className="mb-4 font-headline text-4xl font-bold tracking-tight md:text-5xl">
       Why Artechway?
     </h2>
-    <p className="mx-auto mb-12 max-w-3xl text-lg text-muted-foreground">
+    <p className="mx-auto mb-12 max-w-3xl text-xl text-muted-foreground">
       We believe in the transformative power of AI and its intersection with
       creative design and cutting-edge technology. Artechway is your guide to
       this exciting new world.
     </p>
     <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
       <div className="flex flex-col items-center">
-        <div className="mb-4 rounded-full bg-primary/10 p-4">
-          <BrainCircuit className="h-8 w-8 text-primary" />
+        <div className="mb-6 rounded-full bg-primary/10 p-5">
+          <BrainCircuit className="h-10 w-10 text-primary" />
         </div>
-        <h3 className="mb-2 font-headline text-xl font-semibold">
+        <h3 className="mb-2 font-headline text-2xl font-semibold">
           Expert AI Insights
         </h3>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-lg">
           Deep dives into the latest AI trends, tools, and techniques.
         </p>
       </div>
       <div className="flex flex-col items-center">
-        <div className="mb-4 rounded-full bg-primary/10 p-4">
-          <Lightbulb className="h-8 w-8 text-primary" />
+        <div className="mb-6 rounded-full bg-primary/10 p-5">
+          <Lightbulb className="h-10 w-10 text-primary" />
         </div>
-        <h3 className="mb-2 font-headline text-xl font-semibold">
+        <h3 className="mb-2 font-headline text-2xl font-semibold">
           Creative Inspiration
         </h3>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-lg">
           Exploring how AI is reshaping the boundaries of design and art.
         </p>
       </div>
       <div className="flex flex-col items-center">
-        <div className="mb-4 rounded-full bg-primary/10 p-4">
-          <Rocket className="h-8 w-8 text-primary" />
+        <div className="mb-6 rounded-full bg-primary/10 p-5">
+          <Rocket className="h-10 w-10 text-primary" />
         </div>
-        <h3 className="mb-2 font-headline text-xl font-semibold">
+        <h3 className="mb-2 font-headline text-2xl font-semibold">
           Future-Focused
         </h3>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-lg">
           Looking ahead at the technology that will define our tomorrow.
         </p>
       </div>
@@ -107,12 +107,12 @@ const CategorySection = ({
   category: { label: string; href: string };
   posts: Post[];
 }) => (
-  <section key={category.href} className="mb-16">
-    <div className="mb-8 flex items-center justify-between">
-      <h2 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
-        Latest in {category.label}
+  <section key={category.href} className="mb-24 md:mb-32">
+    <div className="mb-10 flex items-center justify-between">
+      <h2 className="font-headline text-4xl font-bold tracking-tight md:text-5xl">
+        Latest in <span className="text-primary">{category.label}</span>
       </h2>
-      <Button asChild variant="link" className="text-primary">
+      <Button asChild variant="link" className="text-lg text-primary hidden md:inline-flex">
         <Link href={category.href}>
           View all <ArrowRight className="ml-2 h-4 w-4" />
         </Link>
@@ -134,10 +134,10 @@ const CategorySection = ({
 
 const CallToAction = () => (
   <section className="mt-16 text-center">
-    <h2 className="mb-4 font-headline text-3xl font-bold tracking-tight md:text-4xl">
+    <h2 className="mb-4 font-headline text-4xl font-bold tracking-tight md:text-5xl">
       Join our Journey
     </h2>
-    <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+    <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
       Stay up to date with the latest articles and resources. No spam, just
       quality content.
     </p>
@@ -150,16 +150,16 @@ export default async function Home() {
 
   if (allPosts.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
-         <div className="text-center mb-16">
-          <h1 className="mb-4 text-center font-headline text-5xl font-bold tracking-tight md:text-7xl">
+      <div className="container mx-auto px-4 py-16 sm:py-24">
+         <div className="text-center">
+          <h1 className="mb-4 text-center font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
             Welcome to <span className="text-primary">Artechway</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto md:text-2xl">
             Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
           </p>
         </div>
-        <div className="text-center text-muted-foreground">
+        <div className="mt-16 text-center text-muted-foreground">
           <p className="text-lg">No posts yet. The ink is still drying!</p>
           <p>An administrator can create new posts in the admin portal.</p>
         </div>
@@ -170,12 +170,12 @@ export default async function Home() {
   const featuredPost = allPosts[0];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-16 text-center">
-        <h1 className="mb-4 text-center font-headline text-5xl font-bold tracking-tight md:text-7xl">
+    <div className="container mx-auto px-4 py-16 sm:py-24">
+      <div className="mb-24 text-center md:mb-32">
+        <h1 className="mb-4 font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
           Welcome to <span className="text-primary">Artechway</span>
         </h1>
-        <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
+        <p className="mx-auto max-w-3xl text-xl text-muted-foreground md:text-2xl">
           Exploring the frontiers of AI, design, and technology. Fresh ideas and
           perspectives, delivered weekly.
         </p>
@@ -190,6 +190,10 @@ export default async function Home() {
           .filter((post) => post.category === route.label)
           .slice(0, 3);
         
+        if (postsForCategory.length === 0) {
+          return null;
+        }
+
         return (
           <CategorySection
             key={route.href}
