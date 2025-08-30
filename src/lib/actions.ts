@@ -54,7 +54,7 @@ export async function logout() {
 const postSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
   content: z.string().min(10, 'Content must be at least 10 characters'),
-  imageUrl: z.string().url('Please enter a valid image URL'),
+  image_url: z.string().url('Please enter a valid image URL'),
   tags: z.string().optional(),
   category: z.string().min(1, 'Please select a category'),
 });
@@ -70,7 +70,7 @@ export async function createPost(prevState: any, formData: FormData) {
     parsed = postSchema.parse({
       title: formData.get('title'),
       content: formData.get('content'),
-      imageUrl: formData.get('imageUrl'),
+      image_url: formData.get('image_url'),
       tags: formData.get('tags'),
       category: formData.get('category'),
     });
@@ -92,7 +92,7 @@ export async function createPost(prevState: any, formData: FormData) {
     await addPost(supabase, {
       title: parsed.title,
       content: parsed.content,
-      imageUrl: parsed.imageUrl,
+      image_url: parsed.image_url,
       tags: tagsArray,
       category: parsed.category,
       author: user.email || 'Admin',
@@ -121,7 +121,7 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
     const parsed = postSchema.parse({
       title: formData.get('title'),
       content: formData.get('content'),
-      imageUrl: formData.get('imageUrl'),
+      image_url: formData.get('image_url'),
       tags: formData.get('tags'),
       category: formData.get('category'),
     });
@@ -131,7 +131,7 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
     await updatePost(supabase, id, {
       title: parsed.title,
       content: parsed.content,
-      imageUrl: parsed.imageUrl,
+      image_url: parsed.image_url,
       tags: tagsArray,
       category: parsed.category,
     });

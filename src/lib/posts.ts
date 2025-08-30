@@ -7,7 +7,7 @@ export type Post = {
   title: string;
   slug: string;
   content: string;
-  imageUrl: string;
+  image_url: string;
   author: string;
   tags?: string[];
   category: string;
@@ -20,7 +20,7 @@ const fromSupabase = (post: any): Post => ({
   title: post.title,
   slug: post.slug,
   content: post.content,
-  imageUrl: post.imageUrl,
+  image_url: post.image_url,
   author: post.author,
   tags: post.tags,
   category: post.category,

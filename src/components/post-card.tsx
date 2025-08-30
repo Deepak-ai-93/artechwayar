@@ -16,7 +16,7 @@ export default function PostCard({ post }: PostCardProps) {
         <CardHeader className="p-0">
           <div className="relative h-56 w-full">
             <Image
-              src={post.imageUrl}
+              src={post.image_url}
               alt={post.title}
               fill
               className="object-cover"

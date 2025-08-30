@@ -61,7 +61,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       <div className="relative mb-8 h-64 w-full overflow-hidden rounded-lg shadow-lg md:h-96">
         <Image
-          src={post.imageUrl}
+          src={post.image_url}
           alt={post.title}
           fill
           priority

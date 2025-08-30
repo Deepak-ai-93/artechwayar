@@ -46,7 +46,7 @@ export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
   
   const [titleError, setTitleError] = useState('');
 
-  const [imageUrl, setImageUrl] = useState(post?.imageUrl || 'https://picsum.photos/1200/800');
+  const [imageUrl, setImageUrl] = useState(post?.image_url || 'https://picsum.photos/1200/800');
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -224,7 +224,7 @@ export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
           <div className="space-y-2">
             <Label>Image</Label>
             <div className="flex items-center gap-4">
-               <Input id="imageUrl" name="imageUrl" type="hidden" value={imageUrl} />
+               <Input id="image_url" name="image_url" type="hidden" value={imageUrl} />
                <img src={imageUrl} alt="Post image" className="h-20 w-20 rounded-md object-cover" />
                 <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
                   {isUploading ? (
