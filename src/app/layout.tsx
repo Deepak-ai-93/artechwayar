@@ -5,7 +5,7 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
-  title: 'Inkling AI',
+  title: 'Artechway',
   description: 'A modern blog powered by AI',
 };
 

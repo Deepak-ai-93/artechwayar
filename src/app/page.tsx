@@ -8,7 +8,7 @@ export default async function Home() {
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-16">
         <h1 className="mb-4 text-center font-headline text-5xl font-bold tracking-tight md:text-7xl">
-          From the <span className="text-primary">Inkwell</span>
+          Welcome to <span className="text-primary">Artechway</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
