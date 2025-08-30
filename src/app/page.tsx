@@ -8,7 +8,6 @@ import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { LogoIcon } from '@/components/ui/logo-icon';
 
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
@@ -142,19 +141,13 @@ export default async function Home() {
   if (allPosts.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 sm:py-24">
-        <div className="grid grid-cols-1 items-center gap-12 text-center lg:grid-cols-2 lg:text-left">
-          <div className="space-y-6">
-            <h1 className="font-headline text-5xl font-bold tracking-tight md:text-7xl lg:text-8xl">
+        <div className="text-center">
+            <h1 className="font-headline text-6xl font-bold tracking-tight md:text-8xl lg:text-9xl">
               Welcome to <span className="text-primary">Artechway</span>
             </h1>
-            <p className="text-xl text-muted-foreground md:text-2xl">
+            <p className="mt-6 mx-auto max-w-2xl text-xl text-muted-foreground md:text-2xl">
               Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
             </p>
-          </div>
-          <div className="relative hidden lg:flex justify-center items-center h-full">
-            <LogoIcon className="h-48 w-48 text-primary/10" />
-            <div className="absolute inset-0 bg-gradient-radial from-primary/10 to-transparent -z-10 animate-pulse"></div>
-          </div>
         </div>
         <div className="mt-16 text-center text-muted-foreground">
           <p className="text-lg">No posts yet. The ink is still drying!</p>
