@@ -64,18 +64,30 @@ export async function createPost(prevState: any, formData: FormData) {
   if (!session) {
     return { message: 'Unauthorized' };
   }
-  
+
   const supabase = createSupabaseServerClient();
+  let parsed;
 
   try {
-    const parsed = postSchema.parse({
+    parsed = postSchema.parse({
       title: formData.get('title'),
       content: formData.get('content'),
       imageUrl: formData.get('imageUrl'),
       tags: formData.get('tags'),
       category: formData.get('category'),
     });
+  } catch (e) {
+    if (e instanceof z.ZodError) {
+      let errorMessage = '';
+      e.errors.forEach((err) => {
+        errorMessage += `${err.path[0]}: ${err.message}. `;
+      });
+      return { message: errorMessage.trim() };
+    }
+    return { message: 'An unexpected error occurred during validation.' };
+  }
 
+  try {
     const tagsArray = parsed.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [];
 
     await addPost(supabase, {
@@ -87,16 +99,9 @@ export async function createPost(prevState: any, formData: FormData) {
       author: session.user.email || 'Admin',
       user_id: session.user.id,
     });
-  } catch (e) {
-    if (e instanceof z.ZodError) {
-      let errorMessage = '';
-      e.errors.forEach((err) => {
-        errorMessage += `${err.path[0]}: ${err.message}. `;
-      });
-      return { message: errorMessage.trim() };
-    }
-    console.error(e);
-    return { message: 'An error occurred while creating the post.' };
+  } catch (error: any) {
+    console.error('Database error:', error);
+    return { message: `An error occurred while creating the post: ${error.message}` };
   }
 
   revalidatePath('/', 'layout');
