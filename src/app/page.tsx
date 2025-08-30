@@ -168,7 +168,6 @@ export default async function Home() {
   }
 
   const featuredPost = allPosts[0];
-  const otherPosts = allPosts.slice(1);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -187,7 +186,7 @@ export default async function Home() {
       <WhyArtechway />
 
       {routes.map((route) => {
-        const postsForCategory = otherPosts
+        const postsForCategory = allPosts
           .filter((post) => post.category === route.label)
           .slice(0, 3);
         
