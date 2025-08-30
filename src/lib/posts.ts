@@ -33,7 +33,7 @@ const slugify = (text: string) =>
     .replace(/--+/g, '-'); // Replace multiple - with single -
 
 export const getPosts = async (): Promise<Post[]> => {
-  const supabase = createSupabaseServerClient();
+  const supabase = createSupabaseServerClient(true);
   const { data: posts, error } = await supabase
     .from('posts')
     .select('*')
@@ -47,7 +47,7 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 export const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
-  const supabase = createSupabaseServerClient();
+  const supabase = createSupabaseServerClient(true);
   const { data, error } = await supabase
     .from('posts')
     .select('*')
@@ -63,7 +63,7 @@ export const getPostBySlug = async (slug: string): Promise<Post | undefined> => 
 };
 
 export const getPostById = async (id: string): Promise<Post | undefined> => {
-  const supabase = createSupabaseServerClient();
+  const supabase = createSupabaseServerClient(true);
   const { data, error } = await supabase
     .from('posts')
     .select('*')
