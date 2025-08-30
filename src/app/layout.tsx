@@ -3,15 +3,9 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import { Belleza, Alegreya } from 'next/font/google';
+import { Raleway } from 'next/font/google';
 
-const belleza = Belleza({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-headline',
-});
-
-const alegreya = Alegreya({
+const raleway = Raleway({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-body',
@@ -28,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${belleza.variable} ${alegreya.variable}`}>
+    <html lang="en" className={`${raleway.variable}`}>
       <head />
       <body className="font-body antialiased">
         <div className="flex min-h-screen flex-col">
