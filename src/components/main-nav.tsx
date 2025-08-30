@@ -4,24 +4,33 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { routes } from '@/lib/routes';
+import { PenSquare } from 'lucide-react';
 
 export function MainNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-      {routes.map((route) => (
-        <Link
-          key={route.href}
-          href={route.href}
-          className={cn(
-            'transition-colors hover:text-primary',
-            pathname?.startsWith(route.href) ? 'text-primary' : 'text-muted-foreground'
-          )}
-        >
-          {route.label}
-        </Link>
-      ))}
-    </nav>
+    <div className="mr-4 hidden md:flex">
+      <Link href="/" className="mr-6 flex items-center space-x-2">
+        <PenSquare className="h-6 w-6 text-primary" />
+        <span className="hidden font-bold sm:inline-block font-headline text-xl">
+          Artechway
+        </span>
+      </Link>
+      <nav className="flex items-center gap-6 text-sm">
+        {routes.map((route) => (
+          <Link
+            key={route.href}
+            href={route.href}
+            className={cn(
+              'transition-colors hover:text-foreground/80',
+              pathname?.startsWith(route.href) ? 'text-foreground' : 'text-foreground/60'
+            )}
+          >
+            {route.label}
+          </Link>
+        ))}
+      </nav>
+    </div>
   );
 }

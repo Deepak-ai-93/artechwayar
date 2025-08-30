@@ -1,24 +1,38 @@
+
+'use client';
+
+import * as React from 'react';
 import Link from 'next/link';
-import { Button } from './ui/button';
-import { LogIn } from 'lucide-react';
 import { MainNav } from './main-nav';
 import { MobileNav } from './mobile-nav';
+import { cn } from '@/lib/utils';
+import { PenSquare } from 'lucide-react';
 
 export default function Header() {
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
-        <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-headline text-2xl font-bold">Artechway</span>
-          </Link>
-          <MainNav />
-        </div>
-        
-        <div className="flex flex-1 items-center justify-between md:justify-end">
-          <MobileNav />
-          <div className="flex items-center space-x-2">
-          </div>
+    <header 
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        scrolled ? "border-b border-border/40 bg-background/95 backdrop-blur" : "bg-transparent"
+      )}
+    >
+      <div className="container flex h-16 items-center">
+        <MainNav />
+        <MobileNav />
+        <div className="flex flex-1 items-center justify-end space-x-2">
+          {/* Future elements can go here */}
         </div>
       </div>
     </header>

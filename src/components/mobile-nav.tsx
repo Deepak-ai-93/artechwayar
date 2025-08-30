@@ -7,19 +7,21 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, PenSquare } from 'lucide-react';
 import { routes } from '@/lib/routes';
+import { cn } from '@/lib/utils';
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
 
   return (
+    <div className="flex items-center md:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button
             variant="ghost"
-            className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
@@ -30,16 +32,19 @@ export function MobileNav() {
             onClick={() => setOpen(false)}
           >
             <PenSquare className="mr-2 h-5 w-5 text-primary" />
-            <span className="font-bold">Artechway</span>
+            <span className="font-bold font-headline text-lg">Artechway</span>
           </Link>
-          <div className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+          <div className="my-4 flex h-[calc(100vh-8rem)] flex-col justify-between pb-10 pl-6">
             <div className="flex flex-col space-y-3">
               {routes.map((route) => (
                 <Link
                   key={route.href}
                   href={route.href}
                   onClick={() => setOpen(false)}
-                  className={`text-lg ${pathname === route.href ? 'text-primary' : 'text-muted-foreground'}`}
+                  className={cn(
+                    "text-lg font-medium transition-colors hover:text-primary",
+                    pathname?.startsWith(route.href) ? 'text-primary' : 'text-muted-foreground'
+                  )}
                 >
                   {route.label}
                 </Link>
@@ -48,5 +53,10 @@ export function MobileNav() {
           </div>
         </SheetContent>
       </Sheet>
+      <Link href="/" className="flex items-center space-x-2">
+        <PenSquare className="h-6 w-6 text-primary" />
+        <span className="font-bold font-headline text-xl">Artechway</span>
+      </Link>
+    </div>
   );
 }
