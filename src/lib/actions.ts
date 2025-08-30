@@ -89,7 +89,11 @@ export async function createPost(prevState: any, formData: FormData) {
     });
   } catch (e) {
     if (e instanceof z.ZodError) {
-      return { message: 'Invalid form data. Please check your inputs.' };
+      let errorMessage = '';
+      e.errors.forEach((err) => {
+        errorMessage += `${err.path[0]}: ${err.message}. `;
+      });
+      return { message: errorMessage.trim() };
     }
     console.error(e);
     return { message: 'An error occurred while creating the post.' };
