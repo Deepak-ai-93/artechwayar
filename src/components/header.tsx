@@ -25,10 +25,10 @@ export default function Header() {
     <header 
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
-        scrolled ? "border-b border-border/40 bg-background/95 backdrop-blur" : "bg-transparent"
+        scrolled ? "border-b border-border/40 bg-background/95 backdrop-blur-sm" : "bg-transparent"
       )}
     >
-      <div className="container flex h-16 items-center">
+      <div className="container flex h-20 items-center">
         <MainNav />
         <MobileNav />
         <div className="flex flex-1 items-center justify-end space-x-2">

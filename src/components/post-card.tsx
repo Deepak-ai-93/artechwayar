@@ -13,7 +13,7 @@ type PostCardProps = {
 export default function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
-      <Card className="h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 bg-card/50 backdrop-blur-sm border-transparent hover:border-primary/20">
+      <Card className="h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 bg-card/50 backdrop-blur-sm border border-primary/10 hover:border-primary/30">
         <CardHeader className="p-0">
           <div className="relative h-56 w-full overflow-hidden">
             <Image
@@ -27,7 +27,7 @@ export default function PostCard({ post }: PostCardProps) {
           </div>
           <div className="p-6 pb-2">
             <div className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
-              <Badge variant="secondary">{post.category}</Badge>
+              <Badge variant="outline">{post.category}</Badge>
               <span>&middot;</span>
               <time dateTime={post.createdAt}>{format(parseISO(post.createdAt), 'MMMM d, yyyy')}</time>
             </div>

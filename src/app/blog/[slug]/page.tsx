@@ -44,14 +44,14 @@ export default async function BlogPostPage({ params }: Props) {
   const contentHtml = await markdownToHtml(post.content);
 
   return (
-    <article className="container mx-auto max-w-4xl px-4 py-8">
+    <article className="container mx-auto max-w-4xl px-4 py-8 sm:py-16">
       <header className="mb-8 text-center">
         <div className="flex justify-center gap-2 mb-4">
           {post.tags?.map((tag) => (
             <Badge key={tag} variant="secondary">{tag}</Badge>
           ))}
         </div>
-        <h1 className="mb-4 font-headline text-4xl font-bold tracking-tight md:text-5xl">
+        <h1 className="mb-4 font-headline text-4xl font-bold tracking-tight md:text-6xl">
           {post.title}
         </h1>
         <p className="text-muted-foreground">
@@ -59,7 +59,7 @@ export default async function BlogPostPage({ params }: Props) {
         </p>
       </header>
 
-      <div className="relative mb-8 h-64 w-full overflow-hidden rounded-lg shadow-lg md:h-96">
+      <div className="relative mb-12 h-64 w-full overflow-hidden rounded-lg shadow-lg md:h-[450px]">
         <Image
           src={post.image_url}
           alt={post.title}
@@ -72,8 +72,8 @@ export default async function BlogPostPage({ params }: Props) {
 
       <div 
         className={cn(
-          'prose prose-lg max-w-none text-foreground/90', 
-          'prose-headings:font-headline prose-headings:text-foreground',
+          'prose prose-lg max-w-none text-foreground/90 dark:prose-invert', 
+          'prose-headings:font-headline prose-headings:text-primary',
           'prose-a:text-primary hover:prose-a:text-primary/80',
           'prose-strong:font-semibold prose-strong:text-foreground'
         )}

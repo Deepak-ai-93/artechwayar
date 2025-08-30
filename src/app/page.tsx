@@ -1,4 +1,3 @@
-
 import PostCard from '@/components/post-card';
 import { getPosts, Post } from '@/lib/posts';
 import { routes } from '@/lib/routes';
@@ -13,13 +12,13 @@ import { Card, CardContent } from '@/components/ui/card';
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
     <Link href={`/blog/${post.slug}`} className="group block">
-      <Card className="grid grid-cols-1 overflow-hidden transition-all duration-300 ease-in-out md:grid-cols-2 hover:shadow-xl bg-card/50 backdrop-blur-sm">
+      <Card className="grid grid-cols-1 overflow-hidden transition-all duration-300 ease-in-out md:grid-cols-2 hover:shadow-2xl bg-card/50 backdrop-blur-sm border border-primary/10 hover:border-primary/30">
         <div className="relative order-1 md:order-2 min-h-[300px] w-full md:min-h-0">
           <Image
             src={post.image_url}
             alt={post.title}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
             data-ai-hint="featured blog image"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
@@ -28,11 +27,11 @@ const FeaturedPost = ({ post }: { post: Post }) => (
           <div className="mb-4 text-sm font-semibold tracking-widest uppercase text-primary">
             Featured Post
           </div>
-          <h2 className="mb-4 font-headline text-3xl md:text-5xl leading-tight group-hover:text-primary">
+          <h2 className="mb-4 font-headline text-4xl md:text-5xl leading-tight text-primary-foreground group-hover:text-primary transition-colors">
             {post.title}
           </h2>
           <div className="mb-6 flex items-center gap-4 text-base text-muted-foreground">
-            <Badge variant="secondary">{post.category}</Badge>
+            <Badge variant="outline">{post.category}</Badge>
             <span>&middot;</span>
             <time dateTime={post.createdAt}>
               {format(parseISO(post.createdAt), 'MMMM d, yyyy')}
@@ -60,7 +59,7 @@ const CategorySection = ({
 }) => (
   <section key={category.href} className="mb-24 md:mb-32">
     <div className="mb-10 flex items-center justify-between">
-      <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tight">
+      <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tight">
         Latest in <span className="text-primary">{category.label}</span>
       </h2>
       <Button asChild variant="link" className="text-lg text-primary hidden md:inline-flex">
@@ -85,8 +84,8 @@ const WhySection = () => (
       <p className="mx-auto mb-12 max-w-3xl text-lg text-muted-foreground md:text-xl">
         We are a collective of designers, developers, and AI enthusiasts passionate about exploring the intersection of technology and creativity.
       </p>
-      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-12 md:grid-cols-3">
-        <div className="flex flex-col items-center">
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+        <Card className="flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm border-primary/10">
           <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
             <Bot className="h-10 w-10" />
           </div>
@@ -94,8 +93,8 @@ const WhySection = () => (
           <p className="text-muted-foreground">
             Exploring the latest advancements and ethical considerations in artificial intelligence.
           </p>
-        </div>
-        <div className="flex flex-col items-center">
+        </Card>
+        <Card className="flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm border-primary/10">
           <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
             <Paintbrush className="h-10 w-10" />
           </div>
@@ -103,8 +102,8 @@ const WhySection = () => (
           <p className="text-muted-foreground">
             Highlighting cutting-edge design trends and their fusion with new technologies.
           </p>
-        </div>
-        <div className="flex flex-col items-center">
+        </Card>
+        <Card className="flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm border-primary/10">
           <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
             <Code className="h-10 w-10" />
           </div>
@@ -112,13 +111,13 @@ const WhySection = () => (
           <p className="text-muted-foreground">
             Diving deep into the code and tools that are shaping the future of the web.
           </p>
-        </div>
+        </Card>
       </div>
     </section>
   );
 
   const CallToAction = () => (
-    <section className="rounded-lg bg-primary/5 p-8 text-center">
+    <section className="rounded-lg bg-gradient-to-r from-primary/5 via-primary/10 to-primary/20 p-8 text-center border border-primary/20">
         <h2 className="mb-4 font-headline text-3xl font-bold md:text-4xl">
             Join our Journey
         </h2>
@@ -133,7 +132,11 @@ const WhySection = () => (
 
 
 export default async function Home() {
-  const allPosts = await getPosts();
+  let allPosts: Post[] = [];
+  // Add a check for environment variables
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    allPosts = await getPosts();
+  }
 
   if (allPosts.length === 0) {
     return (
@@ -147,8 +150,9 @@ export default async function Home() {
               Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
             </p>
           </div>
-          <div className="hidden lg:flex justify-center">
+          <div className="relative hidden lg:flex justify-center items-center h-full">
             <PenSquare className="h-48 w-48 text-primary/10" />
+            <div className="absolute inset-0 bg-gradient-radial from-primary/10 to-transparent -z-10 animate-pulse"></div>
           </div>
         </div>
         <div className="mt-16 text-center text-muted-foreground">
@@ -165,7 +169,7 @@ export default async function Home() {
     <div className="container mx-auto px-4 py-16 sm:py-24 overflow-x-hidden">
       <div className="mb-24 text-center md:mb-32">
         <div className="relative mx-auto max-w-4xl">
-          <h1 className="font-headline text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+          <h1 className="font-headline text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
             Welcome to <span className="text-primary">Artechway</span>
           </h1>
         </div>
