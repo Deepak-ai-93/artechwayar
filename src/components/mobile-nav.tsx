@@ -34,7 +34,7 @@ export function MobileNav() {
             className="flex items-center"
             onClick={() => setOpen(false)}
           >
-             <Image src="/logo.png" alt="Artechway Logo" width={140} height={40} />
+             <Image src="/artechway.png" alt="Artechway Logo" width={140} height={40} />
           </Link>
           <div className="my-4 flex h-[calc(100vh-8rem)] flex-col justify-between pb-10 pl-6">
             <div className="flex flex-col space-y-3">
@@ -56,7 +56,7 @@ export function MobileNav() {
         </SheetContent>
       </Sheet>
       <Link href="/" className="flex items-center space-x-2">
-        <Image src="/logo.png" alt="Artechway Logo" width={140} height={40} />
+        <Image src="/artechway.png" alt="Artechway Logo" width={140} height={40} />
       </Link>
     </div>
   );

@@ -13,7 +13,7 @@ export function MainNav() {
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-        <Image src="/logo.png" alt="Artechway Logo" width={140} height={40} />
+        <Image src="/artechway.png" alt="Artechway Logo" width={140} height={40} />
       </Link>
       <nav className="flex items-center gap-6 text-sm">
         {routes.map((route) => (

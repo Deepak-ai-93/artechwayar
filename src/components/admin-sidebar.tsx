@@ -24,7 +24,7 @@ export function AdminSidebar() {
     <Sidebar>
       <SidebarHeader>
         <Link href="/admin" className="block">
-          <Image src="/logo.png" alt="Artechway Logo" width={140} height={40} />
+          <Image src="/artechway.png" alt="Artechway Logo" width={140} height={40} />
         </Link>
       </SidebarHeader>
       <SidebarContent>
