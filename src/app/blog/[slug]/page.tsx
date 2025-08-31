@@ -46,7 +46,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <article className="container mx-auto max-w-4xl px-4 py-8 sm:py-16">
       <header className="mb-8 text-center">
-        <div className="flex justify-center gap-2 mb-4">
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
           {post.tags?.map((tag) => (
             <Badge key={tag} variant="secondary">{tag}</Badge>
           ))}
