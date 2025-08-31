@@ -157,7 +157,7 @@ export default async function Home() {
     );
   }
 
-  const featuredPost = allPosts.find(p => p.category === 'AI Design') || allPosts[0];
+  const featuredPost = allPosts[Math.floor(Math.random() * allPosts.length)];
   
   return (
     <div className="container mx-auto px-4 py-16 sm:py-24 overflow-x-hidden">
