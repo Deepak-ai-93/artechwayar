@@ -9,6 +9,24 @@ import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 
+const AnimatedTags = () => {
+  const tags = [
+    "dynamic websites", "adaptive websites", "personalization trend",
+    "saasnext", "AI website personalization", "generative UI", "intelligent apps"
+  ];
+
+  return (
+    <div className="mb-8 flex justify-center flex-wrap gap-2">
+      {tags.map((tag, index) => (
+        <Badge key={index} variant="secondary" className="text-sm sm:text-base px-4 py-2 rounded-full">
+          {tag}
+        </Badge>
+      ))}
+    </div>
+  );
+};
+
+
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
     <Link href={`/blog/${post.slug}`} className="group block">
@@ -132,11 +150,7 @@ const WhySection = () => (
 
 
 export default async function Home() {
-  let allPosts: Post[] = [];
-  // Add a check for environment variables
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    allPosts = await getPosts();
-  }
+  const allPosts = await getPosts();
 
   if (allPosts.length === 0) {
     return (
@@ -157,12 +171,15 @@ export default async function Home() {
     );
   }
 
-  const featuredPost = allPosts[Math.floor(Math.random() * allPosts.length)];
+  const dayOfMonth = new Date().getDate();
+  const featuredPostIndex = dayOfMonth % allPosts.length;
+  const featuredPost = allPosts[featuredPostIndex];
   
   return (
     <div className="container mx-auto px-4 py-16 sm:py-24 overflow-x-hidden">
       <div className="mb-24 text-center md:mb-32">
         <div className="relative mx-auto max-w-4xl">
+          <AnimatedTags />
           <h1 className="font-headline text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
             Welcome to <span className="text-primary">Artechway</span>
           </h1>
@@ -173,7 +190,7 @@ export default async function Home() {
       </div>
 
 
-      {allPosts.length > 0 && <FeaturedPost post={featuredPost} />}
+      {featuredPost && <FeaturedPost post={featuredPost} />}
 
       {routes.map((route) => {
         const postsForCategory = allPosts
