@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { LayoutDashboard, PlusCircle, List, LogOut } from 'lucide-react';
 import { logout } from '@/lib/actions';
-import { LogoIcon } from '@/components/ui/logo-icon';
+import Image from 'next/image';
 
 export function AdminSidebar() {
   const pathname = usePathname();
@@ -24,10 +24,7 @@ export function AdminSidebar() {
     <Sidebar>
       <SidebarHeader>
         <Link href="/admin" className="block">
-          <div className="flex items-center gap-2">
-            <LogoIcon className="h-6 w-6 text-primary" />
-            <span className="font-headline text-xl font-semibold">Artechway</span>
-          </div>
+          <Image src="/logo.png" alt="Artechway Logo" width={140} height={40} />
         </Link>
       </SidebarHeader>
       <SidebarContent>
