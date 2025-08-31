@@ -12,8 +12,9 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: 'Artechway',
-  description: 'A modern blog powered by AI',
+  title: 'Artechway | Exploring AI, Design, and Technology',
+  description: 'Dive into the future with Artechway. We explore the frontiers of AI, design, and technology with fresh ideas, in-depth articles, and expert perspectives delivered weekly.',
+  keywords: ['AI', 'Technology', 'Design', 'Innovation', 'Machine Learning', 'Web Development'],
 };
 
 export default function RootLayout({
@@ -23,7 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${raleway.variable}`}>
-      <head />
+      <head>
+        <link rel="icon" href="/artechwaysiteicon.png" sizes="any" />
+        <link rel="apple-touch-icon" href="/artechwaysiteicon.png" />
+      </head>
       <body className="font-body antialiased">
         <div className="flex min-h-screen flex-col">
           <Header />
