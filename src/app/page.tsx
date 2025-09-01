@@ -1,5 +1,5 @@
 import PostCard from '@/components/post-card';
-import { getPosts, Post } from '@/lib/posts';
+import { getPosts, Post, stripMarkdown } from '@/lib/posts';
 import { routes } from '@/lib/routes';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ const FeaturedPost = ({ post }: { post: Post }) => (
             </time>
           </div>
           <p className="mb-8 text-lg leading-relaxed text-foreground/80 line-clamp-3">
-            {post.content}
+            {stripMarkdown(post.content)}
           </p>
           <div className="flex items-center text-lg font-semibold text-primary">
             Read more

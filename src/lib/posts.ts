@@ -53,7 +53,7 @@ export const stripMarkdown = (markdown: string) => {
     // Remove blockquotes
     .replace(/^\s*>\s+/gm, '')
     // Remove horizontal rules
-    .replace(/^\s*([-*_]){3,}\s*$/gm, '')
+    .replace(/^\s*[-*_]{3,}\s*$/gm, '')
     // Remove lists
     .replace(/^\s*[\d*+-]+\.\s+/gm, '')
     // Replace extra newlines
