@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { Raleway } from 'next/font/google';
+import Script from 'next/script';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -27,6 +28,16 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/artechwaysiteicon.png" sizes="any" />
         <link rel="apple-touch-icon" href="/artechwaysiteicon.png" />
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-50TBS7Y2ZM"></Script>
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-50TBS7Y2ZM');
+          `}
+        </Script>
       </head>
       <body className="font-body antialiased">
         <div className="flex min-h-screen flex-col">
