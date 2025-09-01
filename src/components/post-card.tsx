@@ -5,12 +5,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { Badge } from './ui/badge';
+import { stripMarkdown } from '@/lib/posts';
 
 type PostCardProps = {
   post: Post;
 };
 
 export default function PostCard({ post }: PostCardProps) {
+  const plainContent = stripMarkdown(post.content);
+
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
       <Card className="h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 bg-card/50 backdrop-blur-sm border border-primary/10 hover:border-primary/30">
@@ -38,7 +41,7 @@ export default function PostCard({ post }: PostCardProps) {
         </CardHeader>
         <CardContent className="p-6 pt-2">
           <p className="mb-4 line-clamp-3 text-base leading-relaxed text-foreground/80">
-            {post.content}
+            {plainContent}
           </p>
           <div className="flex items-center font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             Read more

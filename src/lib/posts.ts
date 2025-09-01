@@ -37,6 +37,31 @@ const slugify = (text: string) =>
     .replace(/[^\w-]+/g, '') // Remove all non-word chars
     .replace(/--+/g, '-'); // Replace multiple - with single -
 
+export const stripMarkdown = (markdown: string) => {
+  return markdown
+    // Remove headings
+    .replace(/#{1,6}\s+(.*)/g, '$1')
+    // Remove bold and italics
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')
+    .replace(/(\*|_)(.*?)\1/g, '$2')
+    // Remove links
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    // Remove images
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '')
+    // Remove inline code
+    .replace(/`([^`]+)`/g, '$1')
+    // Remove blockquotes
+    .replace(/^\s*>\s+/gm, '')
+    // Remove horizontal rules
+    .replace(/^\s*([-*_]){3,}\s*$/gm, '')
+    // Remove lists
+    .replace(/^\s*[\d*+-]+\.\s+/gm, '')
+    // Replace extra newlines
+    .replace(/\n{2,}/g, '\n')
+    .trim();
+};
+
+
 export const getPosts = async (): Promise<Post[]> => {
   const supabase = createSupabaseServerClient(true);
   if (!supabase) {
