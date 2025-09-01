@@ -1,4 +1,4 @@
-import { getPostBySlug } from '@/lib/posts';
+import { getPostBySlug, stripMarkdown } from '@/lib/posts';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: post.title,
-    description: post.content.substring(0, 150),
+    description: stripMarkdown(post.content).substring(0, 150),
     keywords: post.tags,
   };
 }
@@ -42,9 +42,40 @@ export default async function BlogPostPage({ params }: Props) {
   }
   
   const contentHtml = await markdownToHtml(post.content);
+  const plainContent = stripMarkdown(post.content);
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://artechway.com/blog/${post.slug}`,
+    },
+    headline: post.title,
+    image: post.image_url,
+    datePublished: post.createdAt,
+    dateModified: post.createdAt,
+    author: {
+      '@type': 'Person',
+      name: post.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Artechway',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://artechway.com/artechway.png',
+      },
+    },
+    description: plainContent.substring(0, 250),
+  };
 
   return (
     <article className="container mx-auto max-w-4xl px-4 py-8 sm:py-16">
+       <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="mb-8 text-center">
         <div className="flex flex-wrap justify-center gap-2 mb-4">
           {post.tags?.map((tag) => (
