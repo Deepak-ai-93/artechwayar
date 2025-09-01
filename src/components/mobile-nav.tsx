@@ -16,12 +16,12 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center md:hidden">
+    <div className="flex w-full items-center justify-between md:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button
             variant="ghost"
-            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
           >
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle Menu</span>
@@ -55,9 +55,12 @@ export function MobileNav() {
           </div>
         </SheetContent>
       </Sheet>
-      <Link href="/" className="flex items-center space-x-2">
-        <Image src="/artechway.png" alt="Artechway Logo" width={140} height={40} />
-      </Link>
+      <div className="flex-1 flex justify-center">
+        <Link href="/" className="flex items-center space-x-2">
+          <Image src="/artechway.png" alt="Artechway Logo" width={140} height={40} />
+        </Link>
+      </div>
+      <div className="w-6 h-6" />
     </div>
   );
 }
