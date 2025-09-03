@@ -38,21 +38,6 @@ const slugify = (text: string) =>
     .replace(/[^\w-]+/g, '') // Remove all non-word chars
     .replace(/--+/g, '-'); // Replace multiple - with single -
 
-export const stripMarkdown = (markdown: string) => {
-  return markdown
-    .replace(/#{1,6}\s+(.*)/g, '$1')
-    .replace(/(\*\*|__)(.*?)\1/g, '$2')
-    .replace(/(\*|_)(.*?)\1/g, '$2')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
-    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '')
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/^\s*>\s+/gm, '')
-    .replace(/^\s*[-*_]{3,}\s*$/gm, '')
-    .replace(/^\s*[\d*+-]+\.\s+/gm, '')
-    .replace(/\n{2,}/g, '\n')
-    .trim();
-};
-
 type GetPostsArgs = {
   searchTerm?: string;
   page?: number;

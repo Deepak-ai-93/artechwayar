@@ -1,10 +1,10 @@
-import { getPostBySlug, stripMarkdown } from '@/lib/posts';
+import { getPostBySlug } from '@/lib/posts';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import type { Metadata } from 'next';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import { cn, stripMarkdown } from '@/lib/utils';
 import {unified} from 'unified';
 import remarkParse from 'remark-parse';
 import remarkHtml from 'remark-html';

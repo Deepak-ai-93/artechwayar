@@ -1,5 +1,5 @@
 import PostCard from '@/components/post-card';
-import { getPosts, Post, stripMarkdown } from '@/lib/posts';
+import { getPosts, Post } from '@/lib/posts';
 import { routes } from '@/lib/routes';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import AnimatedHeroText from '@/components/animated-hero-text';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { cookies } from 'next/headers';
+import { stripMarkdown } from '@/lib/utils';
 
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">

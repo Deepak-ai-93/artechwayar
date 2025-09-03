@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { Badge } from './ui/badge';
-import { stripMarkdown } from '@/lib/posts';
+import { stripMarkdown } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
 type PostCardProps = {
