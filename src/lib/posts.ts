@@ -1,6 +1,7 @@
 import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { createSupabaseServerClient } from './auth';
+import { cookies } from 'next/headers';
 
 export type Post = {
   id: string;
@@ -61,7 +62,8 @@ type GetPostsArgs = {
 
 export const getPosts = async (args: GetPostsArgs = {}): Promise<{ posts: Post[]; totalPosts: number }> => {
   const { searchTerm = '', page = 1 } = args;
-  const supabase = createSupabaseServerClient(true);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
   
   if (!supabase) {
     return { posts: [], totalPosts: 0 };
@@ -94,7 +96,8 @@ export const getPosts = async (args: GetPostsArgs = {}): Promise<{ posts: Post[]
 };
 
 export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]> => {
-  const supabase = createSupabaseServerClient(true);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
   if (!supabase) {
     return [];
   }
@@ -112,7 +115,8 @@ export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]>
 };
 
 export const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
-  const supabase = createSupabaseServerClient(true);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
   if (!supabase) {
     return undefined;
   }
@@ -131,7 +135,8 @@ export const getPostBySlug = async (slug: string): Promise<Post | undefined> => 
 };
 
 export const getPostById = async (id: string): Promise<Post | undefined> => {
-  const supabase = createSupabaseServerClient(true);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
   if (!supabase) {
     return undefined;
   }

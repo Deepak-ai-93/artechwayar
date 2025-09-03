@@ -16,7 +16,8 @@ const loginSchema = z.object({
 });
 
 export async function login(prevState: any, formData: FormData) {
-  const supabase = createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore);
   if (!supabase) {
     return { message: 'Supabase credentials are not configured.' };
   }
@@ -49,7 +50,8 @@ export async function login(prevState: any, formData: FormData) {
 }
 
 export async function logout() {
-  const supabase = createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore);
   if (!supabase) {
     console.error('Supabase client not available, cannot log out.');
     return;
@@ -71,8 +73,9 @@ export async function createPost(prevState: any, formData: FormData) {
   if (!user) {
     return { message: 'Unauthorized: You must be logged in to create a post.' };
   }
-
-  const supabase = createSupabaseServerClient();
+  
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore);
   if (!supabase) {
     return { message: 'Cannot create post: Supabase is not configured.' };
   }
@@ -126,7 +129,8 @@ export async function editPost(id: string, prevState: any, formData: FormData) {
     return { message: 'Unauthorized' };
   }
   
-  const supabase = createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore);
   if (!supabase) {
     return { message: 'Cannot edit post: Supabase is not configured.' };
   }
@@ -167,7 +171,8 @@ export async function removePost(id: string) {
   if (!user) {
     throw new Error('Unauthorized');
   }
-  const supabase = createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore);
   if (!supabase) {
     throw new Error('Supabase is not configured.');
   }
@@ -219,8 +224,9 @@ export async function uploadImage(formData: FormData) {
   if (!user) {
     return { error: 'Unauthorized' };
   }
-
-  const supabase = createSupabaseServerClient();
+  
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore);
   if (!supabase) {
     return { error: 'Supabase is not configured.' };
   }
