@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import AnimatedHeroText from '@/components/animated-hero-text';
 
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
@@ -139,7 +140,7 @@ export default async function Home() {
       <div className="container mx-auto px-4 py-16 sm:py-24">
         <div className="text-center">
             <h1 className="font-headline text-6xl font-bold tracking-tight md:text-8xl lg:text-9xl">
-              Welcome to <span className="text-primary">Artechway</span>
+              Welcome to <AnimatedHeroText />
             </h1>
             <p className="mt-6 mx-auto max-w-2xl text-xl text-muted-foreground md:text-2xl">
               Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
@@ -162,7 +163,7 @@ export default async function Home() {
       <div className="mb-24 text-center md:mb-32">
         <div className="relative mx-auto max-w-4xl">
           <h1 className="font-headline text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
-            Welcome to <span className="text-primary">Artechway</span>
+            Welcome to <AnimatedHeroText />
           </h1>
         </div>
         <p className="mx-auto mt-8 max-w-3xl text-lg md:text-xl text-muted-foreground">
