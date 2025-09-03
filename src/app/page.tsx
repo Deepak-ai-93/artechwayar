@@ -133,7 +133,7 @@ const WhySection = () => (
 
 
 export default async function Home() {
-  const allPosts = await getPosts();
+  const { posts: allPosts } = await getPosts();
 
   if (allPosts.length === 0) {
     return (

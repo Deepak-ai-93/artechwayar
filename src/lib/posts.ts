@@ -15,6 +15,8 @@ export type Post = {
   user_id: string;
 };
 
+export const POSTS_PER_PAGE = 10;
+
 const fromSupabase = (post: any): Post => ({
   id: post.id.toString(),
   title: post.title,
@@ -39,44 +41,56 @@ const slugify = (text: string) =>
 
 export const stripMarkdown = (markdown: string) => {
   return markdown
-    // Remove headings
     .replace(/#{1,6}\s+(.*)/g, '$1')
-    // Remove bold and italics
     .replace(/(\*\*|__)(.*?)\1/g, '$2')
     .replace(/(\*|_)(.*?)\1/g, '$2')
-    // Remove links
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
-    // Remove images
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '')
-    // Remove inline code
     .replace(/`([^`]+)`/g, '$1')
-    // Remove blockquotes
     .replace(/^\s*>\s+/gm, '')
-    // Remove horizontal rules
     .replace(/^\s*[-*_]{3,}\s*$/gm, '')
-    // Remove lists
     .replace(/^\s*[\d*+-]+\.\s+/gm, '')
-    // Replace extra newlines
     .replace(/\n{2,}/g, '\n')
     .trim();
 };
 
+type GetPostsArgs = {
+  searchTerm?: string;
+  page?: number;
+};
 
-export const getPosts = async (): Promise<Post[]> => {
+export const getPosts = async (args: GetPostsArgs = {}): Promise<{ posts: Post[]; totalPosts: number }> => {
+  const { searchTerm = '', page = 1 } = args;
   const supabase = createSupabaseServerClient(true);
+  
   if (!supabase) {
-    return [];
+    return { posts: [], totalPosts: 0 };
   }
-  const { data: posts, error } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false });
 
+  const from = (page - 1) * POSTS_PER_PAGE;
+  const to = from + POSTS_PER_PAGE - 1;
+
+  let query = supabase
+    .from('posts')
+    .select('*', { count: 'exact' });
+
+  if (searchTerm) {
+    query = query.ilike('title', `%${searchTerm}%`);
+  }
+  
+  query = query.range(from, to).order('created_at', { ascending: false });
+
+  const { data, error, count } = await query;
+  
   if (error) {
     console.error('Error fetching posts:', error);
-    return [];
+    return { posts: [], totalPosts: 0 };
   }
-  return posts.map(fromSupabase);
+
+  return { 
+    posts: data.map(fromSupabase), 
+    totalPosts: count || 0 
+  };
 };
 
 export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]> => {
@@ -149,7 +163,6 @@ export const addPost = async (supabase: SupabaseClient, postData: Omit<Post, 'id
 
   if (error) {
     console.error('Error adding post to database:', error);
-    // Re-throw the original error to be caught by the server action
     throw error;
   }
 
