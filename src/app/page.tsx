@@ -69,9 +69,9 @@ const CategorySection = ({
         </Link>
       </Button>
     </div>
-    <div className="gap-8 space-y-8 md:columns-2 lg:columns-3">
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
+    <div className="space-y-16">
+      {posts.map((post, index) => (
+        <PostCard key={post.id} post={post} imageSide={index % 2 === 0 ? 'left' : 'right'} />
       ))}
     </div>
   </section>
@@ -162,7 +162,7 @@ export default async function Home() {
     <div className="container mx-auto px-4 py-16 sm:py-24 overflow-x-hidden">
       <div className="mb-24 text-center md:mb-32">
         <div className="relative mx-auto max-w-4xl">
-          <h1 className="font-headline text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
+           <h1 className="font-headline text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
             Welcome to <AnimatedHeroText />
           </h1>
         </div>
