@@ -15,8 +15,8 @@ export default function PostCard({ post }: PostCardProps) {
   const plainContent = stripMarkdown(post.content);
 
   return (
-    <Link href={`/blog/${post.slug}`} className="group block">
-      <Card className="h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 bg-card/50 backdrop-blur-sm border border-primary/10 hover:border-primary/30">
+    <Link href={`/blog/${post.slug}`} className="group block break-inside-avoid">
+      <Card className="h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1 bg-card/50 backdrop-blur-sm border border-primary/10 hover:border-primary/30">
         <CardHeader className="p-0">
           <div className="relative h-56 w-full overflow-hidden">
             <Image

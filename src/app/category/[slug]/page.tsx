@@ -24,7 +24,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
       </div>
 
       {posts.length > 0 ? (
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-8 space-y-8 md:columns-2 lg:columns-3">
           {posts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
