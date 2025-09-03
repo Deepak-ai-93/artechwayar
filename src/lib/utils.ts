@@ -19,3 +19,5 @@ export const stripMarkdown = (markdown: string) => {
     .replace(/\n{2,}/g, '\n')
     .trim();
 };
+
+export const POSTS_PER_PAGE = 10;

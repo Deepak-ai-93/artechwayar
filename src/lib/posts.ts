@@ -1,8 +1,7 @@
-import 'server-only';
+'use server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Post } from '@/lib/types';
-
-export const POSTS_PER_PAGE = 10;
+import { POSTS_PER_PAGE } from './utils';
 
 const fromSupabase = (post: any): Post => ({
   id: post.id.toString(),

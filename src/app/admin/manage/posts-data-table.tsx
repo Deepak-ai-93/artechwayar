@@ -16,7 +16,7 @@ import { PostActions } from './post-actions';
 import type { Post } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { POSTS_PER_PAGE } from '@/lib/posts';
+import { POSTS_PER_PAGE } from '@/lib/utils';
 
 export function PostsDataTable({ posts, totalPosts }: { posts: Post[], totalPosts: number }) {
   const router = useRouter();
