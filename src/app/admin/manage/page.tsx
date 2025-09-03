@@ -1,5 +1,7 @@
 import { getPosts } from '@/lib/posts';
 import { PostsDataTable } from './posts-data-table';
+import { createSupabaseServerClient } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 export default async function ManagePostsPage({
   searchParams,
@@ -9,7 +11,9 @@ export default async function ManagePostsPage({
   const searchTerm = searchParams.q || '';
   const page = Number(searchParams.page) || 1;
 
-  const { posts, totalPosts } = await getPosts({ searchTerm, page });
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
+  const { posts, totalPosts } = await getPosts(supabase, { searchTerm, page });
 
   return (
     <div className="space-y-8">

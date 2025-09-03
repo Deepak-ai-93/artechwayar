@@ -1,9 +1,13 @@
 import { getPostById } from '@/lib/posts';
 import PostForm from '@/components/post-form';
 import { notFound } from 'next/navigation';
+import { createSupabaseServerClient } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 export default async function EditPostPage({ params }: { params: { id: string } }) {
-  const post = await getPostById(params.id);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
+  const post = await getPostById(supabase, params.id);
 
   if (!post) {
     notFound();

@@ -9,6 +9,8 @@ import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import AnimatedHeroText from '@/components/animated-hero-text';
+import { createSupabaseServerClient } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
@@ -133,7 +135,9 @@ const WhySection = () => (
 
 
 export default async function Home() {
-  const { posts: allPosts } = await getPosts();
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
+  const { posts: allPosts } = await getPosts(supabase);
 
   if (allPosts.length === 0) {
     return (

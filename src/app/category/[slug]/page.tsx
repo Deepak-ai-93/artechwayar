@@ -2,6 +2,8 @@ import { getPostsByCategory } from '@/lib/posts';
 import PostCard from '@/components/post-card';
 import { notFound } from 'next/navigation';
 import { routes } from '@/lib/routes';
+import { createSupabaseServerClient } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
   const route = routes.find(r => r.href === `/category/${params.slug}`);
@@ -10,7 +12,9 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     notFound();
   }
 
-  const posts = await getPostsByCategory(route.label);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
+  const posts = await getPostsByCategory(supabase, route.label);
 
   return (
     <div className="container mx-auto px-4 py-8">

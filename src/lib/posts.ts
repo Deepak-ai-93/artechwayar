@@ -1,7 +1,5 @@
 import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { createSupabaseServerClient } from './auth';
-import { cookies } from 'next/headers';
 
 export type Post = {
   id: string;
@@ -60,10 +58,8 @@ type GetPostsArgs = {
   page?: number;
 };
 
-export const getPosts = async (args: GetPostsArgs = {}): Promise<{ posts: Post[]; totalPosts: number }> => {
+export const getPosts = async (supabase: SupabaseClient | null, args: GetPostsArgs = {}): Promise<{ posts: Post[]; totalPosts: number }> => {
   const { searchTerm = '', page = 1 } = args;
-  const cookieStore = cookies();
-  const supabase = createSupabaseServerClient(cookieStore, true);
   
   if (!supabase) {
     return { posts: [], totalPosts: 0 };
@@ -95,9 +91,7 @@ export const getPosts = async (args: GetPostsArgs = {}): Promise<{ posts: Post[]
   };
 };
 
-export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]> => {
-  const cookieStore = cookies();
-  const supabase = createSupabaseServerClient(cookieStore, true);
+export const getPostsByCategory = async (supabase: SupabaseClient | null, categoryLabel: string): Promise<Post[]> => {
   if (!supabase) {
     return [];
   }
@@ -114,9 +108,7 @@ export const getPostsByCategory = async (categoryLabel: string): Promise<Post[]>
   return posts.map(fromSupabase);
 };
 
-export const getPostBySlug = async (slug: string): Promise<Post | undefined> => {
-  const cookieStore = cookies();
-  const supabase = createSupabaseServerClient(cookieStore, true);
+export const getPostBySlug = async (supabase: SupabaseClient | null, slug: string): Promise<Post | undefined> => {
   if (!supabase) {
     return undefined;
   }
@@ -134,9 +126,7 @@ export const getPostBySlug = async (slug: string): Promise<Post | undefined> => 
   return fromSupabase(data);
 };
 
-export const getPostById = async (id: string): Promise<Post | undefined> => {
-  const cookieStore = cookies();
-  const supabase = createSupabaseServerClient(cookieStore, true);
+export const getPostById = async (supabase: SupabaseClient | null, id: string): Promise<Post | undefined> => {
   if (!supabase) {
     return undefined;
   }

@@ -8,13 +8,17 @@ import { cn } from '@/lib/utils';
 import {unified} from 'unified';
 import remarkParse from 'remark-parse';
 import remarkHtml from 'remark-html';
+import { createSupabaseServerClient } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 type Props = {
   params: { slug: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
+  const post = await getPostBySlug(supabase, params.slug);
 
   if (!post) {
     return {
@@ -35,7 +39,9 @@ const markdownToHtml = async (markdown: string) => {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const post = await getPostBySlug(params.slug);
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
+  const post = await getPostBySlug(supabase, params.slug);
 
   if (!post) {
     notFound();
