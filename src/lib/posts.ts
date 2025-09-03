@@ -1,18 +1,6 @@
 import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
-
-export type Post = {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  image_url: string;
-  author: string;
-  tags?: string[];
-  category: string;
-  createdAt: string;
-  user_id: string;
-};
+import type { Post } from '@/lib/types';
 
 export const POSTS_PER_PAGE = 10;
 

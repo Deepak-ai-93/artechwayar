@@ -4,7 +4,7 @@ import { useState, useActionState, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { createPost, editPost, generateBlogTitle, generateBlogContent, uploadImage } from '@/lib/actions';
-import type { Post } from '@/lib/posts';
+import type { Post } from '@/lib/types';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
