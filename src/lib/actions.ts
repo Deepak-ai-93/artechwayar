@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { addPost, deletePost, updatePost, uploadFile } from '@/lib/posts';
-import { getSession, createSupabaseServerClient } from '@/lib/auth';
+import { createSupabaseServerClient } from '@/lib/auth';
 import { generateBlogTitle as generateTitleFlow } from '@/ai/flows/generate-blog-title';
 import { generateBlogContent as generateContentFlow } from '@/ai/flows/generate-blog-content';
 
@@ -14,6 +14,23 @@ const loginSchema = z.object({
   username: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
+
+export async function getSession() {
+  const cookieStore = cookies();
+  const supabase = createSupabaseServerClient(cookieStore, true);
+  if (!supabase) {
+    return { user: null };
+  }
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return { user };
+  } catch (error) {
+    console.error('Error getting session:', error);
+    return { user: null };
+  }
+}
 
 export async function login(prevState: any, formData: FormData) {
   const cookieStore = cookies();

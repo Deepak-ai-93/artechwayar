@@ -1,4 +1,3 @@
-import 'server-only';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
@@ -40,22 +39,4 @@ export function createSupabaseServerClient(cookieStore: ReadonlyRequestCookies, 
       },
     }
   );
-}
-
-export async function getSession() {
-  const { cookies } = await import('next/headers');
-  const cookieStore = cookies();
-  const supabase = createSupabaseServerClient(cookieStore, true);
-  if (!supabase) {
-    return { user: null };
-  }
-  try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    return { user };
-  } catch (error) {
-    console.error('Error getting session:', error);
-    return { user: null };
-  }
 }
