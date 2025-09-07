@@ -13,6 +13,7 @@ import AnimatedHeroText from '@/components/animated-hero-text';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { cookies } from 'next/headers';
 import { stripMarkdown } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const FeaturedPost = ({ post }: { post: Post }) => (
   <section className="mb-24 md:mb-32">
@@ -61,7 +62,11 @@ const CategorySection = ({
 }: {
   category: { label: string; href: string };
   posts: Post[];
-}) => (
+}) => {
+  const heroPost = posts[0];
+  const otherPosts = posts.slice(1);
+
+  return (
   <section key={category.href} className="mb-24 md:mb-32">
     <div className="mb-10 flex items-center justify-between">
       <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tight">
@@ -73,13 +78,20 @@ const CategorySection = ({
         </Link>
       </Button>
     </div>
-    <div className="space-y-16">
-      {posts.map((post, index) => (
-        <PostCard key={post.id} post={post} imageSide={index % 2 === 0 ? 'left' : 'right'} />
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {heroPost && (
+        <div className="md:col-span-2 lg:col-span-3">
+          <PostCard post={heroPost} layout="horizontal" />
+        </div>
+      )}
+      {otherPosts.map((post) => (
+        <PostCard key={post.id} post={post} layout="vertical" />
       ))}
     </div>
   </section>
-);
+  )
+};
 
 const WhySection = () => (
     <section className="mb-24 text-center md:mb-32">
@@ -192,7 +204,7 @@ export default async function Home() {
           <CategorySection
             key={route.href}
             category={route}
-            posts={postsForCategory.slice(0,3)}
+            posts={postsForCategory.slice(0, 4)}
           />
         );
       })}
