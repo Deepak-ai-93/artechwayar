@@ -6,7 +6,6 @@ import { useState, useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { convertImage } from '@/lib/actions';
 import { Loader2, Download, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
@@ -80,7 +79,6 @@ export default function ImageConverterPage() {
     notFound();
   }
 
-
   const handleConvert = async () => {
     if (!file) return;
 
@@ -89,28 +87,51 @@ export default function ImageConverterPage() {
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = async () => {
-      const base64 = reader.result as string;
-      try {
-        const result = await convertImage(base64, toMime);
-        if (result.imageUrl) {
-          setConvertedFile(result.imageUrl);
+    reader.onload = (e) => {
+      const img = document.createElement('img');
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          if (toMime === 'image/jpeg') {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+          ctx.drawImage(img, 0, 0);
+          const dataUrl = canvas.toDataURL(toMime, 0.95);
+          setConvertedFile(dataUrl);
           toast({
             title: 'Conversion Successful',
             description: `Your image has been converted to ${toLabel}.`,
           });
         } else {
-          throw new Error(result.error || 'Unknown conversion error');
+           toast({
+            variant: 'destructive',
+            title: 'Conversion Failed',
+            description: 'Could not get canvas context.',
+          });
         }
-      } catch (error: any) {
+        setIsConverting(false);
+      };
+      img.onerror = () => {
         toast({
           variant: 'destructive',
           title: 'Conversion Failed',
-          description: error.message,
+          description: 'Could not load image for conversion.',
         });
-      } finally {
         setIsConverting(false);
-      }
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => {
+       toast({
+        variant: 'destructive',
+        title: 'Conversion Failed',
+        description: 'Failed to read the input file.',
+      });
+      setIsConverting(false);
     };
   };
 
