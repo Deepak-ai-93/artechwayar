@@ -21,14 +21,14 @@ const formatMap: Record<string, { mime: string; label: string; extensions: strin
   jfif: { mime: 'image/jpeg', label: 'JFIF', extensions: ['.jfif', '.jpg', '.jpeg'] },
 };
 
-export default function ImageConverterPage({ params: { formats } }: { params: { formats: string[] } }) {
+export default function ImageConverterPage({ params }: { params: { formats: string[] } }) {
   const [file, setFile] = useState<File | null>(null);
   const [convertedFile, setConvertedFile] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
   const { toast } = useToast();
 
   const { fromFormat, toFormat, fromMime, toMime, fromLabel, toLabel, fromExtensions } = useMemo(() => {
-    const slug = formats?.[0] || '';
+    const slug = params.formats?.[0] || '';
     const parts = slug.split('-to-');
     if (parts.length !== 2) {
       return { fromFormat: null, toFormat: null };
@@ -51,7 +51,7 @@ export default function ImageConverterPage({ params: { formats } }: { params: { 
       toLabel: toData.label,
       fromExtensions: fromData.extensions,
     };
-  }, [formats]);
+  }, [params]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const inputFile = acceptedFiles[0];
