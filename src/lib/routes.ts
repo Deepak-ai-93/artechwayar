@@ -22,7 +22,12 @@ export const routes: Route[] = [
     label: 'Tools',
     isDropdown: true,
     items: [
-      { href: '/tools/image-converter', label: 'Image Converter' },
+      { href: '/tools/image-converter/png-to-jpg', label: 'PNG to JPG' },
+      { href: '/tools/image-converter/webp-to-png', label: 'WEBP to PNG' },
+      { href: '/tools/image-converter/webp-to-jpg', label: 'WEBP to JPG' },
+      { href: '/tools/image-converter/heic-to-png', label: 'HEIC to PNG' },
+      { href: '/tools/image-converter/heic-to-jpg', label: 'HEIC to JPG' },
+      { href: '/tools/image-converter/jfif-to-png', label: 'JFIF to PNG' },
     ],
   },
 ];
