@@ -28,6 +28,7 @@ export const routes: Route[] = [
       { href: '/tools/image-converter/heic-to-png', label: 'HEIC to PNG' },
       { href: '/tools/image-converter/heic-to-jpg', label: 'HEIC to JPG' },
       { href: '/tools/image-converter/jfif-to-png', label: 'JFIF to PNG' },
+      { href: '/tools/picker-wheel', label: 'Picker Wheel' },
     ],
   },
 ];
