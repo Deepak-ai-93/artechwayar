@@ -10,7 +10,7 @@ import { convertImage } from '@/lib/actions';
 import { Loader2, Download, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 
 const formatMap: Record<string, { mime: string; label: string; extensions: string[] }> = {
   png: { mime: 'image/png', label: 'PNG', extensions: ['.png'] },
@@ -21,14 +21,15 @@ const formatMap: Record<string, { mime: string; label: string; extensions: strin
   jfif: { mime: 'image/jpeg', label: 'JFIF', extensions: ['.jfif', '.jpg', '.jpeg'] },
 };
 
-export default function ImageConverterPage({ params }: { params: { formats: string[] } }) {
+export default function ImageConverterPage() {
+  const params = useParams();
   const [file, setFile] = useState<File | null>(null);
   const [convertedFile, setConvertedFile] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
   const { toast } = useToast();
 
   const { fromFormat, toFormat, fromMime, toMime, fromLabel, toLabel, fromExtensions } = useMemo(() => {
-    const slug = params.formats?.[0] || '';
+    const slug = (params.formats as string[])?.[0] || '';
     const parts = slug.split('-to-');
     if (parts.length !== 2) {
       return { fromFormat: null, toFormat: null };
