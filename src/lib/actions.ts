@@ -1,3 +1,4 @@
+
 'use server';
 
 import { z } from 'zod';
@@ -265,11 +266,6 @@ export async function uploadImage(formData: FormData) {
 }
 
 export async function convertImage(imageDataUri: string, outputFormat: 'image/jpeg' | 'image/png' | 'image/webp') {
-  const { user } = await getSession();
-  if (!user) {
-    return { error: 'Unauthorized' };
-  }
-
   if (!imageDataUri) {
     return { error: 'Image data is required.' };
   }
