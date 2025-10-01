@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Loader2, Sparkles, Save, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { routes } from '@/lib/routes';
+import { routes, isNavItem } from '@/lib/routes';
 
 function SubmitButton({ isEdit }: { isEdit: boolean }) {
   const { pending } = useFormStatus();
@@ -173,7 +173,7 @@ export default function PostForm({ post }: { post?: Post & {tags?: string} }) {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {routes.map(route => (
+                  {routes.filter(isNavItem).map(route => (
                     <SelectItem key={route.href} value={route.label}>
                       {route.label}
                     </SelectItem>

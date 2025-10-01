@@ -1,7 +1,7 @@
 import PostCard from '@/components/post-card';
 import { getPosts } from '@/lib/posts';
 import type { Post } from '@/lib/types';
-import { routes } from '@/lib/routes';
+import { routes, isNavItem } from '@/lib/routes';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Bot, Code, Paintbrush } from 'lucide-react';
@@ -192,7 +192,7 @@ export default async function Home() {
 
       {featuredPost && <FeaturedPost post={featuredPost} />}
 
-      {routes.map((route) => {
+      {routes.filter(isNavItem).map((route) => {
         const postsForCategory = allPosts
           .filter((post) => post.category === route.label);
         

@@ -9,6 +9,7 @@ import { addPost, deletePost, updatePost, uploadFile } from '@/lib/posts';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { generateBlogTitle as generateTitleFlow } from '@/ai/flows/generate-blog-title';
 import { generateBlogContent as generateContentFlow } from '@/ai/flows/generate-blog-content';
+import { convertImage as convertImageFlow } from '@/ai/flows/convert-image-flow';
 
 const loginSchema = z.object({
   username: z.string().email('Please enter a valid email address'),
@@ -260,5 +261,24 @@ export async function uploadImage(formData: FormData) {
   } catch (error: any) {
     console.error('Upload action error:', error);
     return { error: error.message || 'An unknown upload error occurred.' };
+  }
+}
+
+export async function convertImage(imageDataUri: string, outputFormat: 'image/jpeg' | 'image/png' | 'image/webp') {
+  const { user } = await getSession();
+  if (!user) {
+    return { error: 'Unauthorized' };
+  }
+
+  if (!imageDataUri) {
+    return { error: 'Image data is required.' };
+  }
+
+  try {
+    const { imageUrl } = await convertImageFlow({ imageDataUri, outputFormat });
+    return { imageUrl };
+  } catch (error: any) {
+    console.error('Image conversion error:', error);
+    return { error: `Failed to convert image: ${error.message}` };
   }
 }

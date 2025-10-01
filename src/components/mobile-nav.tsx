@@ -6,10 +6,19 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
-import { routes } from '@/lib/routes';
+import { Menu, ChevronDown } from 'lucide-react';
+import { routes, type Route, type NavItem } from '@/lib/routes';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+
+const isNavItem = (route: Route): route is NavItem => 'href' in route;
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
@@ -38,19 +47,46 @@ export function MobileNav() {
           </Link>
           <div className="my-4 flex h-[calc(100vh-8rem)] flex-col justify-between pb-10 pl-6">
             <div className="flex flex-col space-y-3">
-              {routes.map((route) => (
-                <Link
-                  key={route.href}
-                  href={route.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "text-lg font-medium transition-colors hover:text-primary",
-                    pathname?.startsWith(route.href) ? 'text-primary' : 'text-muted-foreground'
-                  )}
-                >
-                  {route.label}
-                </Link>
-              ))}
+              {routes.map((route) =>
+                isNavItem(route) ? (
+                  <Link
+                    key={route.href}
+                    href={route.href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "text-lg font-medium transition-colors hover:text-primary",
+                      pathname?.startsWith(route.href) ? 'text-primary' : 'text-muted-foreground'
+                    )}
+                  >
+                    {route.label}
+                  </Link>
+                ) : (
+                  <Accordion key={route.label} type="single" collapsible className="w-full">
+                    <AccordionItem value={route.label} className="border-b-0">
+                      <AccordionTrigger className="text-lg font-medium text-muted-foreground hover:no-underline hover:text-primary py-2">
+                        {route.label}
+                      </AccordionTrigger>
+                      <AccordionContent className="pl-4">
+                        <div className="flex flex-col space-y-3 pt-2">
+                          {route.items.map((item) => (
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              onClick={() => setOpen(false)}
+                              className={cn(
+                                "text-base font-medium transition-colors hover:text-primary",
+                                pathname?.startsWith(item.href) ? 'text-primary' : 'text-muted-foreground'
+                              )}
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                )
+              )}
             </div>
           </div>
         </SheetContent>

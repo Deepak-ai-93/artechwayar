@@ -1,12 +1,13 @@
 import { getPostsByCategory } from '@/lib/posts';
 import PostCard from '@/components/post-card';
 import { notFound } from 'next/navigation';
-import { routes } from '@/lib/routes';
+import { routes, isNavItem } from '@/lib/routes';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { cookies } from 'next/headers';
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
-  const route = routes.find(r => r.href === `/category/${params.slug}`);
+  const categoryRoutes = routes.filter(isNavItem);
+  const route = categoryRoutes.find(r => r.href === `/category/${params.slug}`);
 
   if (!route) {
     notFound();
@@ -53,7 +54,8 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 }
 
 export async function generateStaticParams() {
-  return routes.map(route => ({
+  const categoryRoutes = routes.filter(isNavItem);
+  return categoryRoutes.map(route => ({
     slug: route.href.replace('/category/', ''),
   }));
 }

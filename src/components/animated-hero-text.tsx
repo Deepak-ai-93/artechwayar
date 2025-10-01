@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { routes } from '@/lib/routes';
+import { routes, isNavItem } from '@/lib/routes';
 
-const words = ['Artechway', ...routes.map(r => r.label)];
+const words = ['Artechway', ...routes.filter(isNavItem).map(r => r.label)];
 const colors = [
   'text-primary',
   'text-chart-1',
