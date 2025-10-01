@@ -1,3 +1,4 @@
+
 import PostCard from '@/components/post-card';
 import { getPosts } from '@/lib/posts';
 import type { Post } from '@/lib/types';
@@ -161,7 +162,7 @@ export default async function Home() {
               Welcome to <AnimatedHeroText />
             </h1>
             <p className="mt-6 mx-auto max-w-2xl text-xl text-muted-foreground md:text-2xl">
-              Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
+              Exploring the frontiers of AI, design, and technology. Discover fresh ideas, perspectives, and useful tools.
             </p>
         </div>
         <div className="mt-16 text-center text-muted-foreground">
@@ -185,7 +186,7 @@ export default async function Home() {
           </h1>
         </div>
         <p className="mx-auto mt-8 max-w-3xl text-lg md:text-xl text-muted-foreground">
-          Exploring the frontiers of AI, design, and technology. Fresh ideas and perspectives, delivered weekly.
+          Exploring the frontiers of AI, design, and technology. Discover fresh ideas, perspectives, and useful tools.
         </p>
       </div>
 
