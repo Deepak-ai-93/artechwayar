@@ -26,3 +26,5 @@ export const routes: Route[] = [
     ],
   },
 ];
+
+export const isNavItem = (route: Route): route is NavItem => 'href' in route;
