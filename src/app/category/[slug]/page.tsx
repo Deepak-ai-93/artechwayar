@@ -4,6 +4,28 @@ import { notFound } from 'next/navigation';
 import { routes, isNavItem } from '@/lib/routes';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { cookies } from 'next/headers';
+import type { Metadata } from 'next';
+
+type Props = {
+  params: { slug: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const categoryRoutes = routes.filter(isNavItem);
+  const route = categoryRoutes.find(r => r.href === `/category/${params.slug}`);
+
+  if (!route) {
+    return {
+      title: 'Category Not Found',
+    };
+  }
+
+  return {
+    title: `${route.label} Articles | Artechway`,
+    description: `Browse the latest articles and insights on ${route.label}. Explore topics in AI, design, and technology.`,
+  };
+}
+
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
   const categoryRoutes = routes.filter(isNavItem);
@@ -38,7 +60,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
               <PostCard post={heroPost} layout="horizontal" />
             </div>
            )}
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {otherPosts.map((post) => (
                 <PostCard key={post.id} post={post} layout="vertical" />
             ))}

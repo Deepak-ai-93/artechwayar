@@ -65,7 +65,7 @@ const CategorySection = ({
   posts: Post[];
 }) => {
   const heroPost = posts[0];
-  const otherPosts = posts.slice(1);
+  const otherPosts = posts.slice(1, 7);
 
   return (
   <section key={category.href} className="mb-24 md:mb-32">
@@ -80,15 +80,17 @@ const CategorySection = ({
       </Button>
     </div>
     
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
       {heroPost && (
-        <div className="md:col-span-2 lg:col-span-3">
+        <div className="lg:col-span-8">
           <PostCard post={heroPost} layout="horizontal" />
         </div>
       )}
-      {otherPosts.map((post) => (
-        <PostCard key={post.id} post={post} layout="vertical" />
-      ))}
+      <div className="lg:col-span-4 flex flex-col gap-8">
+        {otherPosts.slice(0, 3).map((post) => (
+          <PostCard key={post.id} post={post} layout="vertical-minimal" />
+        ))}
+      </div>
     </div>
   </section>
   )

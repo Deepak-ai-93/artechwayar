@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 type PostCardProps = {
   post: Post;
-  layout?: 'horizontal' | 'vertical';
+  layout?: 'horizontal' | 'vertical' | 'vertical-minimal';
 };
 
 export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
@@ -50,12 +50,40 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
       </Link>
     )
   }
+  
+  if (layout === 'vertical-minimal') {
+    return (
+        <Link href={`/blog/${post.slug}`} className="group block h-full">
+            <div className="flex items-center gap-4 transition-all duration-300 ease-in-out hover:bg-card/70 p-3 rounded-lg">
+                <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-md shadow-md">
+                    <Image
+                        src={post.image_url}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+                        data-ai-hint="blog image"
+                        sizes="80px"
+                    />
+                </div>
+                <div className="flex-grow">
+                    <h2 className="font-headline text-base sm:text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-primary">
+                        {post.title}
+                    </h2>
+                    <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                        <Badge variant="secondary" className="hidden sm:inline-flex">{post.category}</Badge>
+                        <time dateTime={post.createdAt}>{format(parseISO(post.createdAt), 'MMM d, yyyy')}</time>
+                    </div>
+                </div>
+            </div>
+        </Link>
+    )
+}
 
   // Vertical Layout
   return (
     <Link href={`/blog/${post.slug}`} className="group block h-full">
       <div className="flex flex-col h-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:bg-card/70 hover:shadow-xl p-4">
-        <div className="relative h-56 w-full overflow-hidden rounded-md mb-4 shadow-md">
+        <div className="relative h-48 w-full overflow-hidden rounded-md mb-4 shadow-md">
           <Image
             src={post.image_url}
             alt={post.title}
