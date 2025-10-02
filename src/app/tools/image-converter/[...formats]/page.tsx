@@ -6,10 +6,11 @@ import { useState, useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Download, Image as ImageIcon } from 'lucide-react';
+import { Loader2, Download, Image as ImageIcon, FileCheck2, HelpCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
 
 const formatMap: Record<string, { mime: string; label: string; extensions: string[] }> = {
   png: { mime: 'image/png', label: 'PNG', extensions: ['.png'] },
@@ -20,6 +21,35 @@ const formatMap: Record<string, { mime: string; label: string; extensions: strin
   jfif: { mime: 'image/jpeg', label: 'JFIF', extensions: ['.jfif', '.jpg', '.jpeg'] },
 };
 
+const seoContent: Record<string, { title: string; text: string; faqs: {q: string, a: string}[] }> = {
+  'png-to-jpg': {
+    title: 'Your Free Online PNG to JPG Converter',
+    text: 'Our PNG to JPG converter is a free online tool that lets you change your images from PNG to JPG format in seconds. This is incredibly useful for optimizing images for the web, as JPG files are often smaller than PNGs, leading to faster page load times. Converting is simple: just upload your PNG, and we’ll provide a high-quality JPG file for you to download instantly. No software, no watermarks, no limits.',
+    faqs: [
+      { q: 'Why convert from PNG to JPG?', a: 'Converting from PNG to JPG can significantly reduce file size, which is ideal for web use. JPGs use lossy compression, making them smaller and faster to load on websites, while still maintaining great quality for photographs and complex images.'},
+      { q: 'Will I lose image quality?', a: 'JPG is a lossy format, so there is a slight quality reduction, but our tool uses a high-quality setting (95%) to ensure the difference is virtually unnoticeable for most uses while still providing a much smaller file.'},
+      { q: 'Does this tool handle transparency?', a: 'JPG does not support transparency. When you convert a transparent PNG to JPG, the transparent areas will be filled with a solid white background by default.'},
+    ],
+  },
+  'webp-to-png': {
+    title: 'Seamless WEBP to PNG Conversion',
+    text: 'WEBP is a modern format with great compression, but it\'s not universally supported. Our WEBP to PNG converter allows you to change your WEBP images into the widely compatible PNG format. PNG is a lossless format, meaning it preserves all image data, including transparency. This is perfect for graphics, logos, and images where quality and transparency are essential.',
+    faqs: [
+        { q: 'Why convert from WEBP to PNG?', a: 'While WEBP is efficient, PNG offers broader compatibility across older devices, software, and platforms. Converting to PNG ensures your image can be viewed and edited almost anywhere, and it fully supports transparency.'},
+        { q: 'Is the conversion lossless?', a: 'Yes. Both WEBP (in its lossless mode) and PNG are lossless formats. Our tool ensures that when you convert from WEBP to PNG, all the original image quality and data, including transparency, are perfectly preserved.'},
+    ]
+  },
+  'heic-to-jpg': {
+    title: 'Convert iPhone Photos (HEIC) to JPG for Free',
+    text: 'Apple uses the HEIC (High-Efficiency Image Container) format for photos on iPhones and iPads because it saves space. However, HEIC isn\'t compatible with many apps and devices, especially outside the Apple ecosystem. Our HEIC to JPG converter makes your photos universal. Convert your .heic files to the standard JPG format to easily share, edit, and view them on any platform.',
+    faqs: [
+        { q: 'What is a HEIC file?', a: 'HEIC is an image format that Apple uses to store photos. It uses advanced compression to save images at a high quality but with a smaller file size compared to JPG.'},
+        { q: 'Why do I need to convert HEIC to JPG?', a: 'You need to convert HEIC to JPG to ensure your photos can be viewed on non-Apple devices, like Windows PCs and Android phones, or used in software that doesn\'t support the HEIC format.'},
+    ]
+  }
+};
+
+
 export default function ImageConverterPage() {
   const params = useParams();
   const [file, setFile] = useState<File | null>(null);
@@ -27,11 +57,11 @@ export default function ImageConverterPage() {
   const [isConverting, setIsConverting] = useState(false);
   const { toast } = useToast();
 
-  const { fromFormat, toFormat, fromMime, toMime, fromLabel, toLabel, fromExtensions } = useMemo(() => {
-    const slug = (params.formats as string[])?.[0] || '';
-    const parts = slug.split('-to-');
+  const { slug, fromFormat, toFormat, fromMime, toMime, fromLabel, toLabel, fromExtensions } = useMemo(() => {
+    const currentSlug = (params.formats as string[])?.[0] || '';
+    const parts = currentSlug.split('-to-');
     if (parts.length !== 2) {
-      return { fromFormat: null, toFormat: null };
+      return { slug: null, fromFormat: null, toFormat: null };
     }
     
     const [from, to] = parts;
@@ -39,10 +69,11 @@ export default function ImageConverterPage() {
     const toData = formatMap[to];
 
     if (!fromData || !toData) {
-      return { fromFormat: null, toFormat: null };
+      return { slug: null, fromFormat: null, toFormat: null };
     }
 
     return {
+      slug: currentSlug,
       fromFormat: from,
       toFormat: to,
       fromMime: fromData.mime,
@@ -52,6 +83,13 @@ export default function ImageConverterPage() {
       fromExtensions: fromData.extensions,
     };
   }, [params]);
+  
+  const currentSeoContent = useMemo(() => {
+    return seoContent[slug as string] || 
+           seoContent[Object.keys(seoContent).find(k => slug?.includes(k.split('-to-')[0])) || ''] ||
+           { title: `Your Free Online ${fromLabel} to ${toLabel} Converter`, text: `Convert your images from ${fromLabel} to ${toLabel} for free.`, faqs: [] };
+  }, [slug, fromLabel, toLabel]);
+
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const inputFile = acceptedFiles[0];
@@ -217,6 +255,31 @@ export default function ImageConverterPage() {
           )}
         </CardContent>
       </Card>
+
+      <Separator className="my-12" />
+
+      <section className="max-w-3xl mx-auto space-y-8">
+        <div className="text-center">
+          <h2 className="font-headline text-3xl font-bold tracking-tight">{currentSeoContent.title}</h2>
+          <p className="mt-4 text-lg text-muted-foreground">{currentSeoContent.text}</p>
+        </div>
+        
+        <div className="space-y-6">
+            <h3 className="font-headline text-2xl font-bold flex items-center gap-2"><HelpCircle className="text-primary"/><span>Frequently Asked Questions</span></h3>
+            {currentSeoContent.faqs.map((faq, index) => (
+              <div key={index} className="rounded-lg border bg-card/50 p-4">
+                <h4 className="font-semibold text-primary">{faq.q}</h4>
+                <p className="text-muted-foreground mt-2">{faq.a}</p>
+              </div>
+            ))}
+        </div>
+
+        <div className="rounded-lg border bg-card/50 p-6 text-center">
+            <h3 className="font-headline text-2xl font-bold">Fast, Free, and Secure</h3>
+            <p className="text-muted-foreground mt-2 max-w-xl mx-auto">All conversions happen directly in your browser. Your files are never uploaded to our servers, ensuring your data remains private and secure. Enjoy unlimited conversions with no watermarks.</p>
+        </div>
+      </section>
+
     </div>
   );
 }

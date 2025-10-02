@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { RotateCw, Trophy } from 'lucide-react';
+import { RotateCw, Trophy, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   AlertDialog,
@@ -17,6 +17,7 @@ import {
   AlertDialogFooter,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
+import { Separator } from '@/components/ui/separator';
 
 const wheelColors = [
   '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5',
@@ -166,6 +167,43 @@ export default function PickerWheelPage() {
           </div>
         </CardContent>
       </Card>
+
+      <Separator className="my-12" />
+
+      <section className="max-w-3xl mx-auto space-y-8">
+        <div className="text-center">
+          <h2 className="font-headline text-3xl font-bold tracking-tight">The Ultimate Random Name Picker</h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Can't decide? Let fate take the wheel! Our Picker Wheel is a free and fun online tool that helps you make random choices in an exciting way. Whether you're running a giveaway, choosing a name for a contest, or just trying to decide where to eat for lunch, our wheel has you covered.
+          </p>
+        </div>
+        
+        <div className="space-y-6">
+            <h3 className="font-headline text-2xl font-bold flex items-center gap-2"><HelpCircle className="text-primary"/><span>How to Use the Picker Wheel</span></h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+              <div className="rounded-lg border bg-card/50 p-4">
+                <div className="font-bold text-primary text-4xl mb-2">1</div>
+                <h4 className="font-semibold">Enter Names</h4>
+                <p className="text-sm text-muted-foreground">Type or paste the list of names or choices into the text box, with each option on a new line.</p>
+              </div>
+              <div className="rounded-lg border bg-card/50 p-4">
+                <div className="font-bold text-primary text-4xl mb-2">2</div>
+                <h4 className="font-semibold">Spin the Wheel</h4>
+                <p className="text-sm text-muted-foreground">Click the "Spin the Wheel" button to start the random selection process with an engaging animation.</p>
+              </div>
+              <div className="rounded-lg border bg-card/50 p-4">
+                <div className="font-bold text-primary text-4xl mb-2">3</div>
+                <h4 className="font-semibold">Get a Winner</h4>
+                <p className="text-sm text-muted-foreground">The wheel will stop on a random choice, which is then announced as the winner. It's that simple!</p>
+              </div>
+            </div>
+        </div>
+
+        <div className="rounded-lg border bg-card/50 p-6 text-center">
+            <h3 className="font-headline text-2xl font-bold">Perfect for Any Occasion</h3>
+            <p className="text-muted-foreground mt-2 max-w-xl mx-auto">Use it for contests, classroom activities, giveaways, brainstorming sessions, or any time you need a fair and random choice. It's a versatile tool for teachers, marketers, and anyone looking to add a bit of fun to their decision-making process.</p>
+        </div>
+      </section>
       
       <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <AlertDialogContent>
