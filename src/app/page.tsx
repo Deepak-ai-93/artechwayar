@@ -136,21 +136,7 @@ const WhySection = () => (
     </section>
   );
 
-  const CallToAction = () => (
-    <section className="rounded-lg bg-gradient-to-r from-primary/5 via-primary/10 to-primary/20 p-8 text-center border border-primary/20">
-        <h2 className="mb-4 font-headline text-3xl font-bold md:text-4xl">
-            Join our Journey
-        </h2>
-        <p className="mx-auto mb-6 max-w-2xl text-muted-foreground">
-            Stay up to date with the latest articles, tutorials, and news from the world of AI and design.
-        </p>
-        <Button size="lg">
-            <Link href="#">Subscribe Now</Link>
-        </Button>
-    </section>
-);
-
-
+  
 export default async function Home() {
   const cookieStore = cookies();
   const supabase = createSupabaseServerClient(cookieStore, true);
@@ -213,7 +199,6 @@ export default async function Home() {
       })}
 
       <WhySection />
-      <CallToAction />
     </div>
   );
 }
