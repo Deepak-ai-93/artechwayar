@@ -55,36 +55,37 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
   if (layout === 'vertical-minimal') {
     return (
         <Link href={`/blog/${post.slug}`} className="group block h-full">
-            <div className="flex items-start gap-4 transition-all duration-300 ease-in-out hover:bg-card/80 p-3 rounded-lg h-full">
-                <div className="flex-grow">
-                    <h2 className="font-headline text-base sm:text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-primary mb-2">
-                        {post.title}
-                    </h2>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Badge variant="outline" className="text-xs">{post.category}</Badge>
-                        <time dateTime={post.createdAt}>{format(parseISO(post.createdAt), 'MMM d, yyyy')}</time>
-                    </div>
-                </div>
-                <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-md shadow-md">
+            <div className="flex items-start gap-4 transition-all duration-300 ease-in-out hover:bg-card/80 p-2 rounded-lg h-full">
+                <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md">
                     <Image
                         src={post.image_url}
                         alt={post.title}
                         fill
                         className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
                         data-ai-hint="blog image"
-                        sizes="80px"
+                        sizes="64px"
                     />
+                </div>
+                <div className="flex-grow">
+                    <h2 className="font-headline text-sm font-bold leading-snug transition-colors duration-300 group-hover:text-primary mb-1">
+                        {post.title}
+                    </h2>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <time dateTime={post.createdAt}>{format(parseISO(post.createdAt), 'MMM d, yyyy')}</time>
+                        <span>&middot;</span>
+                        <span>{post.category}</span>
+                    </div>
                 </div>
             </div>
         </Link>
     )
 }
 
-  // Vertical Layout
+  // Vertical Layout (main grid)
   return (
     <Link href={`/blog/${post.slug}`} className="group block h-full">
-      <div className="flex flex-col h-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:bg-card/80 border border-border/20">
-        <div className="relative h-48 w-full overflow-hidden">
+      <div className="flex flex-col h-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg">
+        <div className="relative h-48 w-full overflow-hidden rounded-lg">
           <Image
             src={post.image_url}
             alt={post.title}
@@ -93,20 +94,17 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
             data-ai-hint="blog image"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
+           <div className="absolute bottom-2 left-2">
+             <Badge variant="default" className="bg-black/70 text-white border-transparent">{post.category}</Badge>
+           </div>
         </div>
-        <div className="flex flex-col flex-grow p-4">
-            <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
-              <Badge variant="secondary">{post.category}</Badge>
-              <span>&middot;</span>
-              <time dateTime={post.createdAt}>{format(parseISO(post.createdAt), 'MMM d, yyyy')}</time>
-            </div>
-            <h2 className="font-headline text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-primary mb-2 flex-grow">
+        <div className="py-4">
+            <h2 className="font-headline text-lg font-bold leading-snug mb-2">
               {post.title}
             </h2>
-            <div className="flex items-center text-sm font-semibold text-primary mt-auto opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              Read more
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </div>
+            <p className="text-muted-foreground text-sm line-clamp-2">
+              {plainContent}
+            </p>
         </div>
       </div>
     </Link>

@@ -42,13 +42,10 @@ export default async function CategoryPage({ params }: { params: { slug: string 
   
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-12">
-        <h1 className="mb-4 font-headline text-5xl font-bold tracking-tight md:text-7xl">
+      <div className="mb-8 border-b pb-4">
+        <h1 className="font-headline text-4xl font-bold tracking-tight">
           Category: <span className="text-primary">{route.label}</span>
         </h1>
-        <p className="text-xl text-muted-foreground max-w-3xl">
-          Posts filed under the &quot;{route.label}&quot; category.
-        </p>
       </div>
 
       {posts.length > 0 ? (
