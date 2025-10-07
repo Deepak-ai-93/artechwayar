@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 
 const formatMetadata: Record<string, { title: string; description: string; keywords: string[] }> = {
