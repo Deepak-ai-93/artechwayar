@@ -30,6 +30,7 @@ export const routes: Route[] = [
       { href: '/tools/image-converter/jfif-to-png', label: 'JFIF to PNG' },
       { href: '/tools/picker-wheel', label: 'Picker Wheel' },
       { href: '/tools/image-resizer', label: 'Image Resizer' },
+      { href: '/tools/image-cropper', label: 'Image Cropper' },
     ],
   },
 ];
