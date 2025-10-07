@@ -3,6 +3,7 @@ import PostCard from '@/components/post-card';
 import { getPosts } from '@/lib/posts';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { cookies } from 'next/headers';
+import AnimatedHeroText from '@/components/animated-hero-text';
 
 export default async function Home() {
   const cookieStore = cookies();
@@ -35,9 +36,7 @@ export default async function Home() {
   return (
     <>
       <div className="container mx-auto px-4 pt-16 sm:pt-24 text-center">
-        <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight">
-          Exploring AI, Design, and Technology
-        </h1>
+        <AnimatedHeroText />
         <p className="mt-4 mx-auto max-w-3xl text-lg md:text-xl text-muted-foreground">
           Dive into the future with Artechway. We explore the frontiers of AI, design, and technology with fresh ideas, in-depth articles, and expert perspectives delivered weekly.
         </p>
