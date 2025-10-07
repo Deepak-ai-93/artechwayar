@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { usePalette } from 'color-thief-react';
 import { Button } from '@/components/ui/button';
@@ -68,14 +68,17 @@ export default function ColorPickerPage() {
     quality: 10,
   });
 
-  if (error) {
-    console.error(error);
-    toast({
-        title: 'Error processing image',
-        description: 'Could not extract colors. The image might be corrupted or in an unsupported format.',
-        variant: 'destructive'
-    });
-  }
+  useEffect(() => {
+    if (error) {
+      console.error(error);
+      toast({
+          title: 'Error processing image',
+          description: 'Could not extract colors. The image might be corrupted or in an unsupported format.',
+          variant: 'destructive'
+      });
+    }
+  }, [error, toast]);
+
 
   const handleNew = () => {
     setFile(null);
@@ -164,4 +167,3 @@ export default function ColorPickerPage() {
     </div>
   );
 }
-
