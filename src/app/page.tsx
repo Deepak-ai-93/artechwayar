@@ -1,23 +1,15 @@
 
 import PostCard from '@/components/post-card';
 import { getPosts } from '@/lib/posts';
-import type { Post } from '@/lib/types';
-import { routes, isNavItem } from '@/lib/routes';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Bot, Code, Paintbrush } from 'lucide-react';
-import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import AnimatedHeroText from '@/components/animated-hero-text';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { cookies } from 'next/headers';
-import { cn } from '@/lib/utils';
+import AnimatedHeroText from '@/components/animated-hero-text';
 import { FloatingIcons } from '@/components/floating-icons';
 
 export default async function Home() {
   const cookieStore = cookies();
   const supabase = createSupabaseServerClient(cookieStore, true);
-  const { posts: allPosts } = await getPosts(supabase, { page: 1 });
+  const { posts: allPosts } = await getPosts(supabase, { page: 1, limit: 10 });
 
   if (allPosts.length === 0) {
     return (
@@ -65,7 +57,7 @@ export default async function Home() {
         {otherPosts.length > 0 && (
             <div>
                 <h2 className="font-headline text-2xl font-bold tracking-tight mb-4 border-b pb-2 border-border">More Stories</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {otherPosts.map(post => (
                         <PostCard key={post.id} post={post} layout="vertical" />
                     ))}

@@ -40,10 +40,6 @@ export default async function CategoryPage({ params }: { params: { slug: string 
   const supabase = createSupabaseServerClient(cookieStore, true);
   const posts = await getPostsByCategory(supabase, route.label);
   
-  const topStory = posts[0];
-  const secondaryStories = posts.slice(1, 5);
-  const otherPosts = posts.slice(5);
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-12">
@@ -56,16 +52,8 @@ export default async function CategoryPage({ params }: { params: { slug: string 
       </div>
 
       {posts.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-                {topStory && <PostCard post={topStory} layout="horizontal" />}
-            </div>
-            <div className="space-y-4">
-                 {secondaryStories.map((post) => (
-                    <PostCard key={post.id} post={post} layout="vertical-minimal" />
-                ))}
-            </div>
-            {otherPosts.map((post) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post) => (
                 <div key={post.id} className="lg:col-span-1">
                     <PostCard post={post} layout="vertical" />
                 </div>

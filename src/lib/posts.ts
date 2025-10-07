@@ -28,17 +28,18 @@ const slugify = (text: string) =>
 type GetPostsArgs = {
   searchTerm?: string;
   page?: number;
+  limit?: number;
 };
 
 export const getPosts = async (supabase: SupabaseClient | null, args: GetPostsArgs = {}): Promise<{ posts: Post[]; totalPosts: number }> => {
-  const { searchTerm = '', page = 1 } = args;
+  const { searchTerm = '', page = 1, limit = POSTS_PER_PAGE } = args;
   
   if (!supabase) {
     return { posts: [], totalPosts: 0 };
   }
 
-  const from = (page - 1) * POSTS_PER_PAGE;
-  const to = from + POSTS_PER_PAGE - 1;
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
 
   let query = supabase
     .from('posts')
