@@ -33,30 +33,40 @@ export default async function Home() {
 
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    {mainPosts.map(post => (
-                        <PostCard key={post.id} post={post} layout="vertical" />
-                    ))}
-                </div>
-            </div>
+    <>
+      <div className="container mx-auto px-4 pt-16 sm:pt-24 text-center">
+        <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight">
+          Exploring AI, Design, and Technology
+        </h1>
+        <p className="mt-4 mx-auto max-w-3xl text-lg md:text-xl text-muted-foreground">
+          Dive into the future with Artechway. We explore the frontiers of AI, design, and technology with fresh ideas, in-depth articles, and expert perspectives delivered weekly.
+        </p>
+      </div>
+      <div className="container mx-auto px-4 py-8 sm:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              
+              {/* Main Content */}
+              <div className="lg:col-span-2">
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                      {mainPosts.map(post => (
+                          <PostCard key={post.id} post={post} layout="vertical" />
+                      ))}
+                  </div>
+              </div>
 
-            {/* Sidebar */}
-            <aside className="space-y-8">
-                <div>
-                    <h2 className="font-headline text-2xl font-bold tracking-tight mb-4 border-b pb-2 border-border">Latest Posts</h2>
-                    <div className="space-y-4">
-                        {recentPosts.map(post => (
-                            <PostCard key={post.id} post={post} layout="vertical-minimal" />
-                        ))}
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </div>
+              {/* Sidebar */}
+              <aside className="space-y-8">
+                  <div>
+                      <h2 className="font-headline text-2xl font-bold tracking-tight mb-4 border-b pb-2 border-border">Latest Posts</h2>
+                      <div className="space-y-4">
+                          {recentPosts.map(post => (
+                              <PostCard key={post.id} post={post} layout="vertical-minimal" />
+                          ))}
+                      </div>
+                  </div>
+              </aside>
+          </div>
+      </div>
+    </>
   );
 }
