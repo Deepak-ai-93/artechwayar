@@ -66,6 +66,8 @@ export default function ColorPickerPage() {
   const { data: palette, loading, error } = usePalette(imageUrl, 8, 'hex', {
     crossOrigin: 'anonymous',
     quality: 10,
+    // Only run the hook if imageUrl is not null
+    disabled: !imageUrl,
   });
 
   useEffect(() => {
