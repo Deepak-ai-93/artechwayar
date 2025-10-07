@@ -31,6 +31,7 @@ export const routes: Route[] = [
       { href: '/tools/picker-wheel', label: 'Picker Wheel' },
       { href: '/tools/image-resizer', label: 'Image Resizer' },
       { href: '/tools/image-cropper', label: 'Image Cropper' },
+      { href: '/tools/color-picker', label: 'Color Picker' },
     ],
   },
 ];
