@@ -1,3 +1,4 @@
+
 import { getPostsByCategory } from '@/lib/posts';
 import PostCard from '@/components/post-card';
 import { notFound } from 'next/navigation';
@@ -39,32 +40,36 @@ export default async function CategoryPage({ params }: { params: { slug: string 
   const supabase = createSupabaseServerClient(cookieStore, true);
   const posts = await getPostsByCategory(supabase, route.label);
   
-  const heroPost = posts[0];
-  const otherPosts = posts.slice(1);
+  const topStory = posts[0];
+  const secondaryStories = posts.slice(1, 5);
+  const otherPosts = posts.slice(5);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-16">
-        <h1 className="mb-4 text-center font-headline text-5xl font-bold tracking-tight md:text-7xl">
+      <div className="mb-12">
+        <h1 className="mb-4 font-headline text-5xl font-bold tracking-tight md:text-7xl">
           Category: <span className="text-primary">{route.label}</span>
         </h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+        <p className="text-xl text-muted-foreground max-w-3xl">
           Posts filed under the &quot;{route.label}&quot; category.
         </p>
       </div>
 
       {posts.length > 0 ? (
-        <div className="space-y-8">
-           {heroPost && (
-            <div className="mb-12">
-              <PostCard post={heroPost} layout="horizontal" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+                {topStory && <PostCard post={topStory} layout="horizontal" />}
             </div>
-           )}
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="space-y-4">
+                 {secondaryStories.map((post) => (
+                    <PostCard key={post.id} post={post} layout="vertical-minimal" />
+                ))}
+            </div>
             {otherPosts.map((post) => (
-                <PostCard key={post.id} post={post} layout="vertical" />
+                <div key={post.id} className="lg:col-span-1">
+                    <PostCard post={post} layout="vertical" />
+                </div>
             ))}
-           </div>
         </div>
       ) : (
         <div className="text-center text-muted-foreground">
