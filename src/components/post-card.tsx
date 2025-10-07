@@ -19,7 +19,7 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
   if (layout === 'horizontal') {
     return (
       <Link href={`/blog/${post.slug}`} className="group block">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12 transition-all duration-300 ease-in-out hover:bg-card/70 p-4 sm:p-8 rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12 bg-secondary/30 transition-all duration-300 ease-in-out hover:bg-secondary/60 p-4 sm:p-8 rounded-lg border border-secondary">
           <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-lg shadow-lg">
             <Image
               src={post.image_url}
@@ -55,7 +55,7 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
   if (layout === 'vertical-minimal') {
     return (
         <Link href={`/blog/${post.slug}`} className="group block h-full">
-            <div className="flex items-center gap-4 transition-all duration-300 ease-in-out hover:bg-card/70 p-3 rounded-lg">
+            <div className="flex items-start gap-4 bg-secondary/30 transition-all duration-300 ease-in-out hover:bg-secondary/60 p-3 rounded-lg border border-secondary h-full">
                 <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-md shadow-md">
                     <Image
                         src={post.image_url}
@@ -71,7 +71,6 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
                         {post.title}
                     </h2>
                     <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                        <Badge variant="secondary" className="hidden sm:inline-flex">{post.category}</Badge>
                         <time dateTime={post.createdAt}>{format(parseISO(post.createdAt), 'MMM d, yyyy')}</time>
                     </div>
                 </div>
@@ -83,8 +82,8 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
   // Vertical Layout
   return (
     <Link href={`/blog/${post.slug}`} className="group block h-full">
-      <div className="flex flex-col h-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:bg-card/70 hover:shadow-xl p-4">
-        <div className="relative h-48 w-full overflow-hidden rounded-md mb-4 shadow-md">
+      <div className="flex flex-col h-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out bg-secondary/30 hover:bg-secondary/60 border border-secondary">
+        <div className="relative h-48 w-full overflow-hidden">
           <Image
             src={post.image_url}
             alt={post.title}
@@ -94,7 +93,7 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
-        <div className="flex flex-col flex-grow p-2">
+        <div className="flex flex-col flex-grow p-4">
             <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
               <Badge variant="secondary">{post.category}</Badge>
               <span>&middot;</span>
@@ -103,7 +102,7 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
             <h2 className="font-headline text-xl font-bold leading-snug transition-colors duration-300 group-hover:text-primary mb-2 flex-grow">
               {post.title}
             </h2>
-            <div className="flex items-center text-sm font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="flex items-center text-sm font-semibold text-primary mt-auto opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               Read more
               <ArrowRight className="ml-1 h-4 w-4" />
             </div>

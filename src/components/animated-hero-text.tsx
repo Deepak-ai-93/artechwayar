@@ -34,7 +34,7 @@ export default function AnimatedHeroText() {
     <span
       className={cn(
         'transition-all duration-500',
-        fade ? 'opacity-100' : 'opacity-0',
+        fade ? 'opacity-100 scale-100' : 'opacity-0 scale-95',
         colors[index % colors.length]
       )}
     >
