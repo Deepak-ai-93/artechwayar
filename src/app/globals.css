@@ -118,19 +118,19 @@
       transform: translateY(-20px);
     }
   }
-  @keyframes text-fade-in {
-    0% {
+  @keyframes text-fade-in-out {
+    0%, 100% {
       opacity: 0;
-      transform: translateY(10px) scale(0.95);
+      transform: translateY(10px);
     }
-    100% {
+    10%, 90% {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0);
     }
   }
 
-  .animate-text-fade-in {
-    animation: text-fade-in 0.5s ease-out forwards;
+  .animate-text-fade-in-out {
+    animation: text-fade-in-out 3s ease-in-out forwards;
     opacity: 0;
   }
 }

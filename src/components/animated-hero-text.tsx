@@ -3,7 +3,35 @@
 
 import { useEffect, useState } from 'react';
 
-const wordsToAnimate = ["AI", "Technology"];
+const wordCycles: Record<string, string[]> = {
+  "AI": ["AI", "Automation", "Innovation"],
+  "Technology": ["Technology", "Development", "Software"],
+};
+
+const baseText = "Exploring AI, Design, and Technology";
+const animatedWords = Object.keys(wordCycles);
+
+function AnimatedWord({ word, cycle }: { word: string, cycle: string[] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % cycle.length);
+    }, 3000); // Change word every 3 seconds
+    return () => clearInterval(interval);
+  }, [cycle.length]);
+
+  return (
+    <span className="relative inline-block w-32 sm:w-48 text-left">
+      <span
+        key={index}
+        className="inline-block animate-text-fade-in-out text-primary"
+      >
+        {cycle[index]}
+      </span>
+    </span>
+  );
+}
 
 export default function AnimatedHeroText() {
   const [isMounted, setIsMounted] = useState(false);
@@ -12,30 +40,22 @@ export default function AnimatedHeroText() {
     setIsMounted(true);
   }, []);
 
-  const text = "Exploring AI, Design, and Technology";
-  const parts = text.split(new RegExp(`(${wordsToAnimate.join('|')})`, 'g'));
-
   if (!isMounted) {
     return (
       <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight">
-        {text}
+        {baseText}
       </h1>
     );
   }
+  
+  const parts = baseText.split(new RegExp(`(${animatedWords.join('|')})`, 'g'));
 
   return (
     <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight">
       {parts.map((part, index) => {
-        if (wordsToAnimate.includes(part)) {
+        if (animatedWords.includes(part)) {
           return (
-            <span key={index} className="inline-block">
-              <span 
-                className="inline-block animate-text-fade-in text-primary"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                {part}
-              </span>
-            </span>
+            <AnimatedWord key={index} word={part} cycle={wordCycles[part]} />
           );
         }
         return <span key={index}>{part}</span>;
