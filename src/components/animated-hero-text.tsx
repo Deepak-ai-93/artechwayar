@@ -11,7 +11,7 @@ const wordCycles: Record<string, string[]> = {
 const baseText = "Exploring AI, Design, and Technology";
 const animatedWords = Object.keys(wordCycles);
 
-function AnimatedWord({ word, cycle }: { word: string, cycle: string[] }) {
+function AnimatedWord({ cycle }: { cycle: string[] }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function AnimatedWord({ word, cycle }: { word: string, cycle: string[] }) {
   }, [cycle.length]);
 
   return (
-    <span className="relative inline-block w-32 sm:w-48 text-left">
+    <span className="relative inline-block text-left">
       <span
         key={index}
         className="inline-block animate-text-fade-in-out text-primary"
@@ -42,24 +42,16 @@ export default function AnimatedHeroText() {
 
   if (!isMounted) {
     return (
-      <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight">
+      <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight">
         {baseText}
       </h1>
     );
   }
-  
-  const parts = baseText.split(new RegExp(`(${animatedWords.join('|')})`, 'g'));
 
   return (
-    <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight">
-      {parts.map((part, index) => {
-        if (animatedWords.includes(part)) {
-          return (
-            <AnimatedWord key={index} word={part} cycle={wordCycles[part]} />
-          );
-        }
-        return <span key={index}>{part}</span>;
-      })}
+    <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight">
+      <span className="block">Exploring <AnimatedWord cycle={wordCycles["AI"]} />, Design,</span>
+      <span className="block">and <AnimatedWord cycle={wordCycles["Technology"]} /></span>
     </h1>
   );
 }
