@@ -4,6 +4,19 @@ import { getPosts } from '@/lib/posts';
 import { createSupabaseServerClient } from '@/lib/auth';
 import { cookies } from 'next/headers';
 import AnimatedHeroText from '@/components/animated-hero-text';
+import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
+
+const seoKeywords = [
+  { label: 'AI Design', href: '/category/ai-design' },
+  { label: 'AI Marketing', href: '/category/ai-marketing' },
+  { label: 'Future of AI', href: '/category/future-of-ai' },
+  { label: 'AI for Business', href: '/category/ai-for-business' },
+  { label: 'Prompt Engineering', href: '/category/ai-design' },
+  { label: 'Autonomous Agents', href: '/category/ai-for-business' },
+  { label: 'Machine Learning', href: '/category/ai-news' },
+  { label: 'Next.js Auth', href: '/category/ai-for-business' },
+];
 
 export default async function Home() {
   const cookieStore = cookies();
@@ -66,6 +79,22 @@ export default async function Home() {
               </aside>
           </div>
       </div>
+
+       {/* SEO Keyword Section */}
+       <div className="container mx-auto px-4 pb-16">
+          <div className="border-t pt-8">
+            <h2 className="font-headline text-2xl font-bold tracking-tight mb-4 text-center">Explore Popular Topics</h2>
+            <div className="flex flex-wrap justify-center gap-2">
+              {seoKeywords.map((keyword) => (
+                <Link href={keyword.href} key={keyword.label}>
+                  <Badge variant="secondary" className="text-sm px-3 py-1 hover:bg-primary/10 hover:text-primary transition-colors">
+                    {keyword.label}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </div>
+       </div>
     </>
   );
 }
