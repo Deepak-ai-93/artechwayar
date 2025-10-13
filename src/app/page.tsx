@@ -21,7 +21,7 @@ const seoKeywords = [
 export default async function Home() {
   const cookieStore = cookies();
   const supabase = createSupabaseServerClient(cookieStore, true);
-  const { posts: allPosts } = await getPosts(supabase, { page: 1, limit: 12 });
+  const { posts: allPosts, totalPosts } = await getPosts(supabase, { page: 1, limit: 12 });
 
   if (allPosts.length === 0) {
     return (

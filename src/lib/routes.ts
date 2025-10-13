@@ -13,7 +13,6 @@ export type DropdownItem = {
 export type Route = NavItem | DropdownItem;
 
 export const routes: Route[] = [
-  { href: '/blog', label: 'Blog' },
   { href: '/category/ai-design', label: 'AI Design' },
   { href: '/category/ai-marketing', label: 'AI Marketing' },
   { href: '/category/ai-news', label: 'AI News' },

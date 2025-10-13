@@ -155,30 +155,4 @@ export const updatePost = async (supabase: SupabaseClient, id: string, postData:
     return undefined;
   }
 
-  return fromSupabase(data);
-};
-
-export const deletePost = async (supabase: SupabaseClient, id: string): Promise<boolean> => {
-  const { error } = await supabase
-    .from('posts')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    console.error('Error deleting post:', error);
-    return false;
-  }
-  return true;
-};
-
-export const uploadFile = async (supabase: SupabaseClient, file: File) => {
-  const fileName = `${Date.now()}-${file.name}`;
-  const { data, error } = await supabase.storage.from('images').upload(fileName, file);
-
-  if (error) {
-    throw new Error(`Storage error: ${error.message}`);
-  }
-
-  const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(data.path);
-  return publicUrl;
-};
+  return fromSupa
