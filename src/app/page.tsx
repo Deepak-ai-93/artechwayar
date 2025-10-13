@@ -95,6 +95,26 @@ export default async function Home() {
             </div>
           </div>
        </div>
+       
+      {/* Purpose Section */}
+      <div className="bg-muted/30">
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h2 className="font-headline text-3xl font-bold tracking-tight mb-4">
+            Your Gateway to the Future of AI and Technology
+          </h2>
+          <div className="max-w-4xl mx-auto text-muted-foreground space-y-4">
+            <p>
+              Artechway is your premier destination for insightful articles, in-depth guides, and practical tools exploring the intersection of artificial intelligence, design, and technology. Our mission is to demystify complex topics and empower you with the knowledge to thrive in an AI-driven world.
+            </p>
+            <p>
+              Whether you are interested in <Link href="/category/ai-for-business" className="text-primary hover:underline">AI for Business</Link>, mastering <Link href="/category/ai-design" className="text-primary hover:underline">Prompt Engineering</Link>, understanding the latest trends in <Link href="/category/ai-marketing" className="text-primary hover:underline">AI Marketing</Link>, or exploring the future of autonomous agents, we provide content that is both educational and actionable. Our free tools, like the Image Resizer and Picker Wheel, are designed to streamline your workflow and enhance your creative projects.
+            </p>
+            <p>
+              Join us as we navigate the exciting frontiers of technology and discover how AI is reshaping our world.
+            </p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
