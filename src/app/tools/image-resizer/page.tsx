@@ -7,11 +7,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Download, Image as ImageIcon, Scaling, HelpCircle, AspectRatio } from 'lucide-react';
+import { Loader2, Download, Image as ImageIcon, Scaling, HelpCircle, FileType } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import NextImage from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+type OutputFormat = 'jpeg' | 'png' | 'webp';
 
 export default function ImageResizerPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -24,12 +33,17 @@ export default function ImageResizerPage() {
   const [keepAspectRatio, setKeepAspectRatio] = useState(true);
   const { toast } = useToast();
   const originalAspectRatio = useRef<number>(1);
+  const [outputFilename, setOutputFilename] = useState('');
+  const [outputFormat, setOutputFormat] = useState<OutputFormat>('jpeg');
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const inputFile = acceptedFiles[0];
     if (inputFile) {
       handleNewConversion();
       setFile(inputFile);
+      const originalName = inputFile.name.split('.').slice(0, -1).join('.');
+      setOutputFilename(`${originalName}-resized`);
+
       const reader = new FileReader();
       reader.onload = (e) => {
         const url = e.target?.result as string;
@@ -91,7 +105,7 @@ export default function ImageResizerPage() {
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(img, 0, 0, Number(width), Number(height));
-        const dataUrl = canvas.toDataURL(file.type, 0.95);
+        const dataUrl = canvas.toDataURL(`image/${outputFormat}`, 0.95);
         setResizedUrl(dataUrl);
         toast({
           title: 'Resize Successful',
@@ -118,12 +132,10 @@ export default function ImageResizerPage() {
   };
 
   const handleDownload = () => {
-    if (!resizedUrl || !file) return;
+    if (!resizedUrl) return;
     const link = document.createElement('a');
     link.href = resizedUrl;
-    const originalName = file.name.split('.').slice(0, -1).join('.');
-    const extension = file.name.split('.').pop();
-    link.download = `${originalName}-resized.${extension}`;
+    link.download = `${outputFilename || 'resized-image'}.${outputFormat}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -136,6 +148,7 @@ export default function ImageResizerPage() {
     setOriginalDimensions(null);
     setWidth('');
     setHeight('');
+    setOutputFilename('');
   };
 
   return (
@@ -203,6 +216,26 @@ export default function ImageResizerPage() {
                     <Switch id="aspect-ratio" checked={keepAspectRatio} onCheckedChange={setKeepAspectRatio} />
                     <Label htmlFor="aspect-ratio">Keep aspect ratio</Label>
                 </div>
+                 <Separator className="my-4" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="filename">Output Filename</Label>
+                    <Input id="filename" value={outputFilename} onChange={(e) => setOutputFilename(e.target.value)} placeholder="e.g. resized-image" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="format">Output Format</Label>
+                     <Select value={outputFormat} onValueChange={(value) => setOutputFormat(value as OutputFormat)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a format" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="jpeg">JPG</SelectItem>
+                        <SelectItem value="png">PNG</SelectItem>
+                        <SelectItem value="webp">WEBP</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-col-reverse sm:flex-row justify-center gap-4">
@@ -218,7 +251,7 @@ export default function ImageResizerPage() {
                   </>
                 ) : (
                   <>
-                    <Button onClick={handleResize} disabled={isProcessing} className="w-full sm:w-auto">
+                    <Button onClick={handleResize} disabled={isProcessing || !width || !height} className="w-full sm:w-auto">
                       {isProcessing ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : <Scaling className="mr-2 h-4 w-4" />}
