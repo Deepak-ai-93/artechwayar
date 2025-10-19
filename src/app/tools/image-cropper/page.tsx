@@ -189,14 +189,14 @@ export default function ImageCropperPage() {
                 <div className="relative h-96 w-full bg-muted/20 rounded-lg">
                     {croppedImageUrl ? (
                         <div className="h-full w-full flex items-center justify-center">
-                            <NextImage src={croppedImageUrl} alt="Cropped" width={500} height={400} objectFit="contain" />
+                            <NextImage src={croppedImageUrl} alt="Cropped" width={400} height={400} objectFit="contain" className="aspect-square"/>
                         </div>
                     ) : (
                         <Cropper
                             image={imageUrl}
                             crop={crop}
                             zoom={zoom}
-                            aspect={4 / 3}
+                            aspect={1 / 1}
                             onCropChange={setCrop}
                             onZoomChange={setZoom}
                             onCropComplete={onCropComplete}
