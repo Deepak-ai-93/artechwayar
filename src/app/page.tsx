@@ -1,11 +1,12 @@
-
+'use client';
 import PostCard from '@/components/post-card';
 import { getPosts } from '@/lib/posts';
-import { createSupabaseServerClient } from '@/lib/auth';
-import { cookies } from 'next/headers';
 import AnimatedHeroText from '@/components/animated-hero-text';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import type { Post } from '@/lib/types';
+import { createSupabaseBrowserClient } from '@/lib/supabase';
 
 const seoKeywords = [
   { label: 'AI Design', href: '/category/ai-design' },
@@ -18,12 +19,20 @@ const seoKeywords = [
   { label: 'Next.js Auth', href: '/category/ai-for-business' },
 ];
 
-export default async function Home() {
-  const cookieStore = cookies();
-  const supabase = createSupabaseServerClient(cookieStore, true);
-  const { posts: allPosts, totalPosts } = await getPosts(supabase, { page: 1, limit: 12 });
+export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const supabase = createSupabaseBrowserClient();
+      const { posts: allPosts } = await getPosts(supabase, { page: 1, limit: 12 });
+      setPosts(allPosts);
+    };
+    fetchPosts();
+  }, []);
 
-  if (allPosts.length === 0) {
+
+  if (posts.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 sm:py-24">
         <div className="relative text-center">
@@ -42,8 +51,8 @@ export default async function Home() {
     );
   }
   
-  const mainPosts = allPosts.slice(0, 8);
-  const recentPosts = allPosts.slice(0, 5);
+  const mainPosts = posts.slice(0, 8);
+  const recentPosts = posts.slice(0, 5);
 
 
   return (

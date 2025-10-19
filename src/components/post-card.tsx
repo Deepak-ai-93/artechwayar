@@ -20,7 +20,7 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
     return (
       <Link href={`/blog/${post.slug}`} className="group block">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-8 transition-all duration-300 ease-in-out hover:bg-card/80 p-4 rounded-lg">
-          <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-lg shadow-lg">
+          <div className="relative w-full overflow-hidden rounded-lg shadow-lg aspect-square">
             <Image
               src={post.image_url}
               alt={post.title}
@@ -56,7 +56,7 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
     return (
         <Link href={`/blog/${post.slug}`} className="group block h-full">
             <div className="flex items-start gap-4 transition-all duration-300 ease-in-out hover:bg-card/80 p-2 rounded-lg h-full">
-                <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md">
+                <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md aspect-square">
                     <Image
                         src={post.image_url}
                         alt={post.title}
@@ -85,7 +85,7 @@ export default function PostCard({ post, layout = 'vertical' }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`} className="group block h-full">
       <div className="flex flex-col h-full overflow-hidden rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg">
-        <div className="relative h-48 w-full overflow-hidden rounded-lg">
+        <div className="relative w-full overflow-hidden rounded-lg aspect-square">
           <Image
             src={post.image_url}
             alt={post.title}

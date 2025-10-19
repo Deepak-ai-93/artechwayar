@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -9,7 +8,6 @@ const wordCycles: Record<string, string[]> = {
 };
 
 const baseText = "Exploring AI, Design, and Technology";
-const animatedWords = Object.keys(wordCycles);
 
 function AnimatedWord({ cycle }: { cycle: string[] }) {
   const [index, setIndex] = useState(0);
