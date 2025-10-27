@@ -133,14 +133,6 @@
   .preloader-logo {
     animation: pulse 1.5s infinite;
   }
-  
-  .preloader-counter {
-    color: hsl(var(--muted-foreground));
-    font-size: 1.125rem;
-    font-family: var(--font-body);
-    animation: text-fade-in-out 1.5s ease-in-out forwards;
-    opacity: 0;
-  }
 
   @keyframes pulse {
     0%, 100% {

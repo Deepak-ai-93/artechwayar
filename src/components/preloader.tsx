@@ -3,69 +3,41 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { getPosts } from '@/lib/posts';
-import { createSupabaseBrowserClient } from '@/lib/supabase';
+import { Progress } from '@/components/ui/progress';
 
 export default function Preloader() {
   const [isLoading, setIsLoading] = useState(true);
-  const [postCount, setPostCount] = useState(0);
-  const [animatedCount, setAnimatedCount] = useState(0);
-  const [showCount, setShowCount] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const fetchPostCount = async () => {
-      const supabase = createSupabaseBrowserClient();
-      const { totalPosts } = await getPosts(supabase, {});
-      setPostCount(totalPosts);
-    };
-
-    fetchPostCount();
-
-    const timer = setTimeout(() => {
-      setShowCount(true);
-    }, 500); 
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (showCount && postCount > 0) {
-      const duration = 1000;
-      const stepTime = Math.max(10, duration / postCount);
-      let currentCount = 0;
-
-      const counterInterval = setInterval(() => {
-        currentCount += 1;
-        setAnimatedCount(currentCount);
-        if (currentCount >= postCount) {
-          clearInterval(counterInterval);
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
           setTimeout(() => setIsLoading(false), 500);
+          return 100;
         }
-      }, stepTime);
+        return prev + 1;
+      });
+    }, 20); // Adjust timing for desired speed
 
-      return () => clearInterval(counterInterval);
-    } else if (showCount && postCount === 0) {
-      setTimeout(() => setIsLoading(false), 1000);
-    }
-  }, [showCount, postCount]);
+    return () => clearInterval(timer);
+  }, []);
 
 
   return (
     <div className={cn('preloader', { hidden: !isLoading })}>
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex w-full max-w-xs flex-col items-center gap-4">
         <Image
           src="/artechway.png"
           alt="Artechway Logo"
           width={200}
           height={57}
-          className="preloader-logo"
+          className="preloader-logo mb-4"
           priority
         />
-        {showCount && (
-            <div className="preloader-counter">
-                {animatedCount} Blogs Loaded
-            </div>
-        )}
+        <Progress value={progress} className="h-2 w-full" />
+        <p className="text-sm text-muted-foreground">{progress}% Loaded</p>
       </div>
     </div>
   );
