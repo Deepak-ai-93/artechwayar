@@ -5,6 +5,7 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { Raleway } from 'next/font/google';
 import Script from 'next/script';
+import Preloader from '@/components/preloader';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="font-body antialiased">
+        <Preloader />
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-grow">{children}</main>
