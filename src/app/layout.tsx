@@ -27,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${raleway.variable}`}>
       <head>
+        <meta name='impact-site-verification' value='049f91b2-7a27-4f0e-89bb-329d09fdae18' />
         <link rel="icon" href="/artechwaysiteicon.png" sizes="any" />
         <link rel="apple-touch-icon" href="/artechwaysiteicon.png" />
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-50TBS7Y2ZM"></Script>
