@@ -163,9 +163,23 @@
       transform: translateY(0);
     }
   }
+  
+  @keyframes preloader-text-fade-in-out {
+    0%, 20%, 100% {
+      opacity: 0;
+    }
+    30%, 90% {
+      opacity: 1;
+    }
+   }
 
   .animate-text-fade-in-out {
     animation: text-fade-in-out 3s ease-in-out forwards;
+    opacity: 0;
+  }
+  
+  .animate-preloader-text-fade-in-out {
+    animation: preloader-text-fade-in-out 3s ease-in-out forwards;
     opacity: 0;
   }
 }
